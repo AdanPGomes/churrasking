@@ -1,10 +1,10 @@
 create table public.guests (
-    id          uuid        primary key default gen_random_uuid()
+    id          uuid        primary key default gen_random_uuid(),
     event_id    uuid        not null references public.events(id) on delete cascade,
     name        text        not null,
     email       text        not null,
     rsvp_status text        not null default 'pending',
-                            check (rsvp_status in ('pending', 'confirmed', 'declined'))
+                            check (rsvp_status in ('pending', 'confirmed', 'declined')),
     created_at  timestamptz not null default now(),
 
     -- OWASP A04: prevents guest impersonation via duplicate registration

@@ -6,7 +6,7 @@ create table public.items (
     assigned_guest_id   uuid            references public.guests(id) on delete set null,
     created_by_host     boolean         not null default false,
     creted_at           timestamptz     not null default now()
-):
+);
 
 -- Lookup all items for an event (items board)
 create index items_event_id_idx on public.items(event_id);
@@ -38,7 +38,7 @@ create policy "items: host insert"
 create policy "items: public update"
     on public.items
     for update
-    using (true)
+    using (true);
 
 create policy "items: host delete"
     on public.items

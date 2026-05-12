@@ -1,8 +1,8 @@
 create table public.profiles (
-    id          uuid primary key references auth.users(id) on delete cascade,
-    name        text not null,
+    id          uuid            primary key references auth.users(id) on delete cascade,
+    name        text            not null,
     avatar_url  text,
-    created_at  timestamptz default now()
+    created_at  timestamptz     default now()
 );
 
 alter table public.profiles enable row level security;
