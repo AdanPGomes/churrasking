@@ -205,17 +205,18 @@ All tables have Row Level Security enabled. See `supabase/migrations/` for full 
 
 This project addresses the [OWASP Top 10](https://owasp.org/www-project-top-ten/)
 
-| # | Risk | Mitigation |
-| A01 | Broken Access Control | RLS on all tables; `host_id` set server-side |
-| A02 | Cryptographic Failures | Supabase Auth handles password hashing |
-| A03 | Injection | Zod validation + Supabase parameterized queries |
-| A04 | Insecure Design | Guest cookie signed with HMAC-SHA256 |
-| A05 | Security Misconfiguration | CSP, X-Frame-Options, Referrer-Policy headers |
-| A06 | Vulnerable Components | `npm audit` in CI + Dependabot |
-| A07 | Auth Failures | Min 8-char password; Supabase rate limiting |
-| A08 | Software Integrity | Dependabot + `npm audit --audit-level=high` in CI |
-| A09 | Logging Failures | Supabase logs + Vercel log drain |
-| A10 | SSRF | Domain whitelist for user-supplied image URLs |
+| #   | Risk                      | Mitigation                                        |
+| --- | ------------------------- | ------------------------------------------------- |
+| A01 | Broken Access Control     | RLS on all tables; `host_id` set server-side      |
+| A02 | Cryptographic Failures    | Supabase Auth handles password hashing            |
+| A03 | Injection                 | Zod validation + Supabase parameterized queries   |
+| A04 | Insecure Design           | Guest cookie signed with HMAC-SHA256              |
+| A05 | Security Misconfiguration | CSP, X-Frame-Options, Referrer-Policy headers     |
+| A06 | Vulnerable Components     | `npm audit` in CI + Dependabot                    |
+| A07 | Auth Failures             | Min 8-char password; Supabase rate limiting       |
+| A08 | Software Integrity        | Dependabot + `npm audit --audit-level=high` in CI |
+| A09 | Logging Failures          | Supabase logs + Vercel log drain                  |
+| A10 | SSRF                      | Domain whitelist for user-supplied image URLs     |
 
 ---
 
