@@ -15,10 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.33.2 --activate
       - uses: actions/cache@v4
         with:
           path: ~/.local/share/pnpm/store
@@ -33,10 +34,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.33.2 --activate
       - uses: actions/cache@v4
         with:
           path: ~/.local/share/pnpm/store
@@ -54,10 +56,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+      - run: corepack enable
+      - run: corepack prepare pnpm@10.33.2 --activate
       - uses: actions/cache@v4
         with:
           path: ~/.local/share/pnpm/store
