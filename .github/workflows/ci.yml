@@ -15,10 +15,12 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
@@ -31,10 +33,12 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm test:coverage
       - uses: actions/upload-artifact@v4
@@ -50,9 +54,11 @@ jobs:
       - uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm audit --audit-level=high
