@@ -7,6 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { createClient } from '@/lib/supabase/server'
 import { Separator } from '@/components/ui/separator'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
+import SummaryCard from '@/components/common/summary-card'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -30,23 +31,9 @@ export default async function DashboardPage() {
         <p className="text-muted-foreground text-sm">Você tem 1 evento próximo esta semana.</p>
 
         <div className="flex justify-between gap-4 mt-4">
-          <Card className="flex-1 gap-1 py-4">
-            <CardHeader className="text-muted-foreground">eventos</CardHeader>
-            <CardContent className="font-bold text-2xl">3</CardContent>
-            <CardFooter className="text-muted-foreground">2 passados</CardFooter>
-          </Card>
-
-          <Card className="flex-1 gap-1 py-4">
-            <CardHeader className="text-muted-foreground">convidados</CardHeader>
-            <CardContent className="font-bold text-2xl">24</CardContent>
-            <CardFooter className="text-muted-foreground">total histórico</CardFooter>
-          </Card>
-
-          <Card className="flex-1 gap-1 py-4">
-            <CardHeader className="text-muted-foreground">confirmações</CardHeader>
-            <CardContent className="font-bold text-2xl text-primary-foreground">87%</CardContent>
-            <CardFooter className="text-muted-foreground">taxa média</CardFooter>
-          </Card>
+          <SummaryCard label="eventos" value="3" sub="2 passados" />
+          <SummaryCard label="convidados" value="24" sub="total histórico" />
+          <SummaryCard label="confirmações" value="87%" sub="taxa média" />
         </div>
       </div>
 
@@ -54,12 +41,14 @@ export default async function DashboardPage() {
         <div className="flex items-center justify-between">
           <p className="font-bold">Meus churrascos</p>
           <Button asChild className="rounded-lg">
-            <Link href="/event/new">+ Novo churrasco</Link>
+            <Link href="/event/new">
+              + Novo<span className="hidden md:inline"> churrasco</span>
+            </Link>
           </Button>
         </div>
 
         <div className="flex flex-wrap gap-4">
-          <Card className="md:w-1/3 p-0 gap-0">
+          <Card className="w-full md:w-1/3 p-0 gap-0">
             <CardHeader className="p-6 bg-primary-foreground rounded-t-xl">
               <Badge>14 jun</Badge>
             </CardHeader>
