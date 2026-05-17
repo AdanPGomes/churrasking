@@ -1,15 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Controller, useForm } from 'react-hook-form'
 
-import { AuthTabs } from './auth-tabs'
 import { register } from '@/actions/auth'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Field, FieldError, FieldLabel } from '@/components/ui/field'
+import { FormErrorAlert } from '@/components/common/form-error-alert'
 import { RegisterInput, registerSchema } from '@/lib/validations/auth'
+import { ControlledFieldInput } from '@/components/common/controlled-field-input'
 
 export function RegisterForm() {
   const [serverError, setServerError] = useState<string | null>(null)
@@ -31,106 +30,43 @@ export function RegisterForm() {
   }
 
   return (
-    <div className="w-full max-w-md">
-      <h1 className="mb-2 text-2xl font-semibold text-foreground">Criar conta</h1>
-      <p className="mb-8 text-sm text-muted-foreground">
-        Organize o seu próximo churrasco em minutos.
-      </p>
+    <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
+      <ControlledFieldInput control={form.control} name="name" label="Nome" required />
+      <ControlledFieldInput
+        control={form.control}
+        name="email"
+        label="E-mail"
+        type="email"
+        required
+        autoComplete="email"
+      />
+      <ControlledFieldInput
+        control={form.control}
+        name="password"
+        label="Senha"
+        type="password"
+        required
+        autoComplete="new-password"
+      />
+      <ControlledFieldInput
+        control={form.control}
+        name="confirmPassword"
+        label="Confirme a senha"
+        type="password"
+        required
+        autoComplete="new-password"
+      />
 
-      <AuthTabs />
+      <FormErrorAlert message={serverError} />
 
-      <form onSubmit={form.handleSubmit(onSubmit)} noValidate className="flex flex-col gap-4">
-        <Controller
-          name="name"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Nome</FieldLabel>
-              <Input
-                id={field.name}
-                type="text"
-                autoComplete="name"
-                aria-invalid={fieldState.invalid}
-                {...field}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="email"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>E-mail</FieldLabel>
-              <Input
-                id={field.name}
-                type="email"
-                autoComplete="email"
-                aria-invalid={fieldState.invalid}
-                {...field}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="password"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Senha</FieldLabel>
-              <Input
-                id={field.name}
-                type="password"
-                autoComplete="new-password"
-                aria-invalid={fieldState.invalid}
-                {...field}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        <Controller
-          name="confirmPassword"
-          control={form.control}
-          render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.invalid}>
-              <FieldLabel htmlFor={field.name}>Confirme a senha</FieldLabel>
-              <Input
-                id={field.name}
-                type="password"
-                autoComplete="new-password"
-                aria-invalid={fieldState.invalid}
-                {...field}
-              />
-              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-            </Field>
-          )}
-        />
-
-        {serverError && (
-          <div
-            className="rounded-lg bg-destructive/10 px-4 py-3 text-sm text-destructive"
-            role="alert"
-            aria-live="polite"
-          >
-            {serverError}
-          </div>
-        )}
-
-        <Button
-          className="w-full rounded-lg"
-          type="submit"
-          disabled={form.formState.isSubmitting}
-          aria-busy={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? 'Criando conta...' : 'Criar conta'}
-        </Button>
-      </form>
-    </div>
+      <Button
+        className="w-full rounded-lg"
+        type="submit"
+        disabled={form.formState.isSubmitting}
+        aria-busy={form.formState.isSubmitting}
+      >
+        {form.formState.isSubmitting ? 'Criando conta...' : 'Criar conta'}
+      </Button>
+    </form>
   )
 }

@@ -2,7 +2,9 @@ import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { createClient } from '@/lib/supabase/server'
+import { AuthTabs } from '@/components/auth/auth-tabs'
 import { LoginForm } from '@/components/auth/login-form'
+import { PageHeader } from '@/components/layout/page-header'
 
 export const metadata: Metadata = {
   title: 'Login',
@@ -16,5 +18,17 @@ export default async function LoginPage() {
 
   if (user) redirect('/dashboard')
 
-  return <LoginForm />
+  return (
+    <div className="w-full max-w-md flex flex-col gap-6">
+      <AuthTabs />
+
+      <div>
+        <PageHeader
+          title="Entrar na conta"
+          description="Organize o seu próximo churrasco em minutos."
+        />
+        <LoginForm />
+      </div>
+    </div>
+  )
 }

@@ -57,7 +57,7 @@ export default async function AppLayout({ children }: Readonly<{ children: React
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="rounded-full h-8 w-8" variant="ghost" size="icon">
-                <Avatar>
+                <Avatar className="w-8 h-8">
                   <AvatarFallback className="bg-primary text-foreground text-xs">
                     {initials}
                   </AvatarFallback>

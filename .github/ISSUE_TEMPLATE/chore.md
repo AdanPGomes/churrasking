@@ -5,8 +5,10 @@ labels: chore
 ---
 
 ## What needs to be done
+
 <!-- Describe the task -->
 
 ## Definition of done
-- [ ] 
+
+- [ ]
 - [ ]
