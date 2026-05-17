@@ -14,7 +14,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "db:push": "supabase db push",
+    "db:reset": "supabase db reset",
+    "db:diff": "supabase db diff"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -56,6 +59,7 @@
     "eslint-config-prettier": "^10.1.8",
     "jsdom": "^29.1.1",
     "prettier": "^3.8.3",
+    "supabase": "^2.98.2",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.6"

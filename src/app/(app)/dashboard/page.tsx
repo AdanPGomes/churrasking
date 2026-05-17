@@ -6,8 +6,11 @@ import { getProfile } from '@/lib/queries/profile'
 import { Progress } from '@/components/ui/progress'
 import { createClient } from '@/lib/supabase/server'
 import { Separator } from '@/components/ui/separator'
+import { SummaryCard } from '@/components/common/summary-card'
+import { PageContainer } from '@/components/layout/page-container'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
-import SummaryCard from '@/components/common/summary-card'
+import { SectionHeader } from '@/components/layout/section-header'
+import { Plus } from 'lucide-react'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -23,7 +26,7 @@ export default async function DashboardPage() {
   const firstName = profile?.name.split(' ')[0] || 'Rei'
 
   return (
-    <main className="container mx-auto px-4 py-8 flex flex-col gap-8">
+    <PageContainer>
       <div className="flex flex-col gap-1">
         <p className="font-bold text-xl">
           {getGreeting()}, {firstName} 👋
@@ -38,14 +41,17 @@ export default async function DashboardPage() {
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="flex items-center justify-between">
-          <p className="font-bold">Meus churrascos</p>
-          <Button asChild className="rounded-lg">
-            <Link href="/event/new">
-              + Novo<span className="hidden md:inline"> churrasco</span>
-            </Link>
-          </Button>
-        </div>
+        <SectionHeader
+          title="Meus churrascos"
+          action={
+            <Button asChild className="rounded-lg">
+              <Link href="/events/new">
+                <Plus className="h-4 w-4 mr-2" />
+                Novo<span className="hidden md:inline"> churrasco</span>
+              </Link>
+            </Button>
+          }
+        />
 
         <div className="flex flex-wrap gap-4">
           <Card className="w-full md:w-1/3 p-0 gap-0">
@@ -72,6 +78,6 @@ export default async function DashboardPage() {
           </Card>
         </div>
       </div>
-    </main>
+    </PageContainer>
   )
 }

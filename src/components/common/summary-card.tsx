@@ -8,7 +8,7 @@ type SummaryCardProps = {
   valueClassName?: string
 }
 
-export default async function SummaryCard({ label, value, sub, valueClassName }: SummaryCardProps) {
+export async function SummaryCard({ label, value, sub, valueClassName }: SummaryCardProps) {
   return (
     <Card className={cn('flex-1 text-center gap-1', valueClassName)}>
       <CardHeader className="p-0 text-muted-foreground">{label}</CardHeader>
