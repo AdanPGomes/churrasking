@@ -17,7 +17,18 @@
     "test:e2e": "playwright test",
     "db:push": "supabase db push",
     "db:reset": "supabase db reset",
-    "db:diff": "supabase db diff"
+    "db:diff": "supabase db diff",
+    "db:types": "supabase gen types typescript --local > src/types/supabase.ts",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
@@ -57,7 +68,9 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
     "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
     "jsdom": "^29.1.1",
+    "lint-staged": "^17.0.5",
     "prettier": "^3.8.3",
     "supabase": "^2.98.2",
     "tailwindcss": "^4",

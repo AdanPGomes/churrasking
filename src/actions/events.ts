@@ -1,10 +1,11 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 
 import { generateSlug } from '@/lib/utils/slug'
 import { createClient } from '@/lib/supabase/server'
-import { createEventSchema } from '@/lib/validations/events'
+import { createEventSchema, EventItem } from '@/lib/validations/events'
 
 type ActionResult = {
   error?: string
@@ -17,7 +18,7 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
     date: formData.get('date') as string,
     time: formData.get('time') as string,
     location: (formData.get('location') as string) || undefined,
-    items: JSON.parse((formData.get('items') as string) ?? '[]'),
+    items: JSON.parse((formData.get('items') as string) ?? '[]') as EventItem[],
   }
 
   const parsed = createEventSchema.safeParse(raw)
@@ -84,4 +85,20 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
   }
 
   redirect(`/events/${event.slug}`)
+}
+
+export async function deleteEvent(eventId: string): Promise<ActionResult> {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+  if (!user) return { error: 'Unauthorized' }
+
+  const { error } = await supabase.from('events').delete().eq('id', eventId).eq('host_id', user.id)
+
+  if (error) return { error: 'Failed to delete event' }
+
+  revalidatePath('/dashboard')
+
+  return {}
 }

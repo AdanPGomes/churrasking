@@ -1,16 +1,18 @@
 import Link from 'next/link'
+import Image from 'next/image'
+import { Plus } from 'lucide-react'
 
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { getProfile } from '@/lib/queries/profile'
-import { Progress } from '@/components/ui/progress'
 import { createClient } from '@/lib/supabase/server'
-import { Separator } from '@/components/ui/separator'
-import { SummaryCard } from '@/components/common/summary-card'
+import { EventCard } from '@/components/events/event-card'
+import { StatCard } from '@/components/common/stat-card'
 import { PageContainer } from '@/components/layout/page-container'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { SectionHeader } from '@/components/layout/section-header'
-import { Plus } from 'lucide-react'
+import { getHostEvents, getHostStats } from '@/lib/queries/events'
+import { PageHeader } from '@/components/layout/page-header'
+import { Suspense } from 'react'
+import { DashboardSkeleton } from '@/components/dashboard/dashboard-skeleton'
 
 function getGreeting() {
   const hour = new Date().getHours()
@@ -19,65 +21,104 @@ function getGreeting() {
   return 'Boa noite'
 }
 
+async function DashboardContent() {
+  const supabase = await createClient()
+
+  const [events, stats] = await Promise.all([getHostEvents(supabase), getHostStats(supabase)])
+
+  return (
+    <>
+      <div className="flex justify-between gap-4">
+        <StatCard
+          label="eventos"
+          value={stats?.total_events ?? 0}
+          sub={`${stats?.past_events ?? 0} passados`}
+        />
+        <StatCard label="convidados" value={stats?.total_guests ?? 0} sub="total histórico" />
+        <StatCard
+          label="confirmações"
+          value={`${stats?.confirmation_rate ?? 0}%`}
+          sub="taxa média"
+        />
+      </div>
+
+      <SectionHeader
+        title="Meus churrascos"
+        action={
+          <Button asChild className="rounded-lg">
+            <Link href="/events/new">
+              <Plus className="h-4 w-4 mr-2" />
+              Novo<span className="hidden md:inline"> churrasco</span>
+            </Link>
+          </Button>
+        }
+      />
+
+      {events.length === 0 ? (
+        <div className="flex flex-col items-center gap-4 py-16 text-center">
+          <div className="relative w-32 h-32">
+            <Image
+              src="/mascot.png"
+              alt="ChurrasKing mascote"
+              fill
+              sizes="128px"
+              className="object-contain opacity-80"
+            />
+          </div>
+          <div>
+            <p className="text-lg font-medium">Cadê o churrasco, rei?</p>
+            <p className="text-muted-foreground text-sm">
+              Crie seu primeiro evento e compartilhe o link com os amigos.
+            </p>
+          </div>
+          <Button asChild>
+            <Link href="/events/new">
+              <Plus className="h-4 w-4" />
+              Criar primeiro churrasco
+            </Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="flex flex-wrap gap-4">
+          {events.map((event) => (
+            <EventCard
+              key={event.id}
+              id={event.id}
+              title={event.title}
+              slug={event.slug}
+              date={new Date(event.date)}
+              location={event.location}
+              coverUrl={event.cover_url}
+              totalGuests={Number(event.total_guests)}
+              confirmedGuests={Number(event.confirmed_guests)}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  )
+}
+
 export default async function DashboardPage() {
   const supabase = await createClient()
-  const profile = await getProfile(supabase)
+  const [profile, events, stats] = await Promise.all([
+    getProfile(supabase),
+    getHostEvents(supabase),
+    getHostStats(supabase),
+  ])
 
   const firstName = profile?.name.split(' ')[0] || 'Rei'
 
   return (
     <PageContainer>
-      <div className="flex flex-col gap-1">
-        <p className="font-bold text-xl">
-          {getGreeting()}, {firstName} 👋
-        </p>
-        <p className="text-muted-foreground text-sm">Você tem 1 evento próximo esta semana.</p>
+      <PageHeader
+        title={`${getGreeting()}, ${firstName} 👋`}
+        description="Você tem 1 evento próximo esta semana."
+      />
 
-        <div className="flex justify-between gap-4 mt-4">
-          <SummaryCard label="eventos" value="3" sub="2 passados" />
-          <SummaryCard label="convidados" value="24" sub="total histórico" />
-          <SummaryCard label="confirmações" value="87%" sub="taxa média" />
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <SectionHeader
-          title="Meus churrascos"
-          action={
-            <Button asChild className="rounded-lg">
-              <Link href="/events/new">
-                <Plus className="h-4 w-4 mr-2" />
-                Novo<span className="hidden md:inline"> churrasco</span>
-              </Link>
-            </Button>
-          }
-        />
-
-        <div className="flex flex-wrap gap-4">
-          <Card className="w-full md:w-1/3 p-0 gap-0">
-            <CardHeader className="p-6 bg-primary-foreground rounded-t-xl">
-              <Badge>14 jun</Badge>
-            </CardHeader>
-
-            <CardContent className="flex flex-col gap-1 my-4">
-              <p className="text-base font-semibold">Churrasco do Aniversário</p>
-              <p className="text-sm text-muted-foreground">Quintal do Adan · 12 convidados</p>
-              <div className="flex flex-col gap-1 mt-1">
-                <p className="text-xs text-muted-foreground">8 de 12 confirmados</p>
-                <Progress className="h-1" value={(8 / 12) * 100} />
-              </div>
-            </CardContent>
-
-            <Separator />
-
-            <CardFooter className="flex justify-end p-2">
-              <Button className="rounded-lg text-sm text-muted-foreground" variant="outline">
-                Copiar link
-              </Button>
-            </CardFooter>
-          </Card>
-        </div>
-      </div>
+      <Suspense fallback={<DashboardSkeleton />}>
+        <DashboardContent />
+      </Suspense>
     </PageContainer>
   )
 }
