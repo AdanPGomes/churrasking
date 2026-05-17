@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-const itemsSchema = z.object({
+const itemSchema = z.object({
   name: z.string().min(2, 'Item name is must be at least 2 characters'),
   estimated_cost: z.coerce.number().min(0).optional(),
 })
@@ -12,7 +12,7 @@ export const createEventSchema = z
     date: z.string().min(1, 'Date is required'),
     time: z.string().min(1, 'Time is required'),
     location: z.string().max(200).optional(),
-    items: z.array(itemsSchema).optional(),
+    items: z.array(itemSchema).optional(),
   })
   .refine(
     (data) => {
@@ -26,3 +26,4 @@ export const createEventSchema = z
   )
 
 export type CreateEventInput = z.infer<typeof createEventSchema>
+export type EventItem = z.infer<typeof itemSchema>
