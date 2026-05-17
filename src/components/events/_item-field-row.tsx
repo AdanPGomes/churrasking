@@ -33,7 +33,6 @@ export function ItemFieldRow<T extends FieldValues>({
         name={`items.${index}.estimated_cost` as Path<T>}
         label={`items.${index}.estimated_cost`}
         hideLabel
-        required
         className="w-36"
       />
 
