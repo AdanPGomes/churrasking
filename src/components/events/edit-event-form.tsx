@@ -7,45 +7,55 @@ import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { createEvent } from '@/actions/events'
+import { updateEvent } from '@/actions/events'
 import { Button } from '@/components/ui/button'
 import { ItemFieldRow } from './item-field-row'
 import { Separator } from '@/components/ui/separator'
-import { createEventSchema } from '@/lib/validations/events'
+import { createEventSchema, updateEventSchema } from '@/lib/validations/events'
 import { FormErrorAlert } from '@/components/common/form-error-alert'
 import { FileUploadField } from '@/components/common/file-upload-field'
 import { ControlledFieldInput } from '@/components/common/controlled-field-input'
 import { ControlledFieldTextArea } from '@/components/common/controlled-field-text-area'
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
 
-function getDefaultDate(): string {
-  return new Date().toISOString().split('T')[0]
+type EditEventFormProps = {
+  event: {
+    id: string
+    slug: string
+    title: string
+    description?: string | null
+    date: string
+    location?: string | null
+    cover_url?: string | null
+  }
 }
 
-function getDefaultTime(): string {
-  const date = new Date()
-  date.setHours(date.getHours() + 1, 0, 0, 0)
-  return date.toTimeString().slice(0, 5)
+function toDateInput(isoDate: string): string {
+  return new Date(isoDate).toISOString().split('T')[0]
 }
 
-export function CreateEventForm() {
+function toTimeInput(isoDate: string): string {
+  return new Date(isoDate).toTimeString().slice(0, 5)
+}
+
+export function EditEventForm({ event }: EditEventFormProps) {
   const router = useRouter()
 
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<
-    z.input<typeof createEventSchema>,
+    z.input<typeof updateEventSchema>,
     unknown,
-    z.output<typeof createEventSchema>
+    z.output<typeof updateEventSchema>
   >({
-    resolver: zodResolver(createEventSchema),
+    resolver: zodResolver(updateEventSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      date: getDefaultDate(),
-      time: getDefaultTime(),
-      location: '',
+      title: event.title,
+      description: event.description ?? '',
+      date: toDateInput(event.date),
+      time: toTimeInput(event.date),
+      location: event.location ?? '',
       items: [],
     },
   })
@@ -54,6 +64,8 @@ export function CreateEventForm() {
     control: form.control,
     name: 'items',
   })
+
+  const today = new Date().toISOString().split('T')[0]
 
   async function onSubmit(data: z.output<typeof createEventSchema>) {
     setServerError(null)
@@ -65,12 +77,9 @@ export function CreateEventForm() {
     formData.append('time', data.time)
     formData.append('location', data.location ?? '')
     formData.append('items', JSON.stringify(data.items ?? []))
+    if (coverFile) formData.append('cover', coverFile)
 
-    if (coverFile) {
-      formData.append('cover', coverFile)
-    }
-
-    const result = await createEvent(formData)
+    const result = await updateEvent(event.id, event.slug, formData)
     if (result?.error) setServerError(result.error)
   }
 
@@ -93,7 +102,7 @@ export function CreateEventForm() {
             placeholder="Conta um pouco sobre o evento..."
           />
 
-          <FieldGroup className="grid grid-cols-2">
+          <FieldGroup className="grid grid-cols-2 gap-4">
             <ControlledFieldInput
               control={form.control}
               name="date"
@@ -157,17 +166,11 @@ export function CreateEventForm() {
               type="submit"
               disabled={form.formState.isSubmitting}
               aria-busy={form.formState.isSubmitting}
-              className="w-full"
             >
-              {form.formState.isSubmitting ? 'Criando...' : 'Criar churrasco'}
+              {form.formState.isSubmitting ? 'Salvando...' : 'Salvar alterações'}
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              className="w-full"
-            >
+            <Button type="button" variant="outline" onClick={() => router.back()}>
               Cancelar
             </Button>
           </div>

@@ -1,17 +1,17 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Suspense } from 'react'
 import { Plus } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { getProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
-import { EventCard } from '@/components/events/event-card'
 import { StatCard } from '@/components/common/stat-card'
+import { EventCard } from '@/components/events/event-card'
+import { PageHeader } from '@/components/layout/page-header'
 import { PageContainer } from '@/components/layout/page-container'
 import { SectionHeader } from '@/components/layout/section-header'
 import { getHostEvents, getHostStats } from '@/lib/queries/events'
-import { PageHeader } from '@/components/layout/page-header'
-import { Suspense } from 'react'
 import { DashboardSkeleton } from '@/components/dashboard/dashboard-skeleton'
 
 function getGreeting() {
@@ -33,12 +33,19 @@ async function DashboardContent() {
           label="eventos"
           value={stats?.total_events ?? 0}
           sub={`${stats?.past_events ?? 0} passados`}
+          className="flex-1"
         />
-        <StatCard label="convidados" value={stats?.total_guests ?? 0} sub="total histórico" />
+        <StatCard
+          label="convidados"
+          value={stats?.total_guests ?? 0}
+          sub="total histórico"
+          className="flex-1"
+        />
         <StatCard
           label="confirmações"
           value={`${stats?.confirmation_rate ?? 0}%`}
           sub="taxa média"
+          className="flex-1"
         />
       </div>
 

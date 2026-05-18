@@ -4,7 +4,7 @@ import { Control, FieldValues, Path } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { FieldGroup } from '@/components/ui/field'
 import { ControlledFieldInput } from '@/components/common/controlled-field-input'
-import { ControlledCurrencyInput } from '../common/controlled-currency-input'
+import { ControlledCurrencyInput } from '@/components/common/controlled-currency-input'
 
 type ItemFieldRowProps<T extends FieldValues> = {
   index: number
