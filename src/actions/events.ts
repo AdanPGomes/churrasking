@@ -24,8 +24,6 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
   const parsed = createEventSchema.safeParse(raw)
   if (!parsed.success) return { error: parsed.error.issues[0].message }
 
-  const coverFile = formData.get('cover') as File | null
-
   const supabase = await createClient()
   const {
     data: { user },
@@ -36,6 +34,7 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
   const eventDate = new Date(`${date}T${time}`)
   const slug = generateSlug(title)
 
+  const coverFile = formData.get('cover') as File | null
   let coverUrl: string | null = null
 
   if (coverFile && coverFile.size > 0) {
@@ -55,36 +54,25 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
     coverUrl = supabase.storage.from('event-covers').getPublicUrl(upload.path).data.publicUrl
   }
 
-  const { data: event, error: eventError } = await supabase
-    .from('events')
-    .insert({
-      host_id: user.id,
-      title,
-      description: description ?? null,
-      date: eventDate.toISOString(),
-      location: location ?? null,
-      slug,
-      cover_url: coverUrl,
-    })
-    .select('id, slug')
-    .single()
+  const { data, error } = await supabase.rpc('create_event_with_items', {
+    p_host_id: user.id,
+    p_title: title,
+    p_description: description ?? null,
+    P_date: eventDate.toISOString(),
+    p_location: location ?? null,
+    p_slug: slug,
+    p_cover_url: coverUrl,
+    p_items:
+      items && items.length > 0
+        ? JSON.stringify(
+            items.map((item) => ({ name: item.name, estimated_cost: item.estimated_cost ?? null }))
+          )
+        : '[]',
+  })
 
-  if (eventError) return { error: 'Failed to create event' }
+  if (error || !data?.[0]) return { error: 'Failed to create event' }
 
-  if (items && items.length > 0) {
-    const { error: itemsError } = await supabase.from('items').insert(
-      items.map((item) => ({
-        event_id: event.id,
-        name: item.name,
-        estimated_cost: item.estimated_cost ?? null,
-        created_by_host: true,
-      }))
-    )
-
-    if (itemsError) return { error: 'Event created but failed to save items' }
-  }
-
-  redirect(`/events/${event.slug}`)
+  redirect(`/events/${data[0].slug}`)
 }
 
 export async function updateEvent(
