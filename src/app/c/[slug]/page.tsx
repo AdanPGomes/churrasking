@@ -10,6 +10,7 @@ import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { GuestItemsBoard } from '@/components/items/guest-items-board'
 import { PublicGuestList } from '@/components/guest/public-guest-list'
 import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { RealtimeProvider } from '@/components/common/realtime-provider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GuestIdentificationForm } from '@/components/guest/guest-identification-form'
 
@@ -108,6 +109,7 @@ export default async function PublicEventPage({ params }: Props) {
       </Card>
 
       <GuestItemsBoard currentGuestId={currentGuest?.id} eventSlug={slug} items={items} />
+      <RealtimeProvider eventId={event.id} />
     </HeroLayout>
   )
 }

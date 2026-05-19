@@ -13,6 +13,7 @@ import { PageHeader } from '@/components/layout/page-header'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { CostSummaryCard } from '@/components/items/cost-summary-card'
 import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { RealtimeProvider } from '@/components/common/realtime-provider'
 import { EventHeroActions } from '@/components/events/event-hero-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -144,6 +145,7 @@ export default async function EventDetailPage({ params }: Props) {
       </div>
 
       <CostSummaryCard items={items} confirmedGuests={Number(event.confirmed_guests)} />
+      <RealtimeProvider eventId={event.id} />
     </HeroLayout>
   )
 }
