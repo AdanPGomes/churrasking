@@ -11,6 +11,8 @@ import { ItemsBoard } from '@/components/items/items-board'
 import { HeroLayout } from '@/components/layout/hero-layout'
 import { PageHeader } from '@/components/layout/page-header'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
+import { CostSummaryCard } from '@/components/items/cost-summary-card'
+import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
 import { EventHeroActions } from '@/components/events/event-hero-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -41,6 +43,7 @@ export default async function EventDetailPage({ params }: Props) {
   const confirmedGuests = Number(event.confirmed_guests)
   const declinedGuests = Number(event.declined_guests)
   const pendingGuests = Number(event.pending_guests)
+  const summary = calculateCostSummary(items, confirmedGuests)
 
   const progressValue =
     Number(event.total_guests) > 0
@@ -82,7 +85,7 @@ export default async function EventDetailPage({ params }: Props) {
                 <StatCard
                   variant="dark"
                   label="por pessoa"
-                  value="R$0"
+                  value={formatCurrency(summary.costPerPerson)}
                   sub="estimado"
                   valueClassName="text-primary"
                 />
@@ -139,6 +142,8 @@ export default async function EventDetailPage({ params }: Props) {
 
         <ItemsBoard eventId={event.id} eventSlug={event.slug} items={items} />
       </div>
+
+      <CostSummaryCard items={items} confirmedGuests={Number(event.confirmed_guests)} />
     </HeroLayout>
   )
 }
