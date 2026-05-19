@@ -1,16 +1,17 @@
 import { notFound } from 'next/navigation'
 
+import { getEventItems } from '@/lib/queries/items'
 import { createClient } from '@/lib/supabase/server'
 import { getGuestSession } from '@/lib/guest-session'
 import { getPublicEventBySlug } from '@/lib/queries/events'
 import { HeroLayout } from '@/components/layout/hero-layout'
 import { RsvpButtons } from '@/components/guest/rsvp-buttons'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
+import { GuestItemsBoard } from '@/components/items/guest-items-board'
 import { PublicGuestList } from '@/components/guest/public-guest-list'
+import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GuestIdentificationForm } from '@/components/guest/guest-identification-form'
-import { GuestItemsBoard } from '@/components/items/guest-items-board'
-import { getEventItems } from '@/lib/queries/items'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -41,6 +42,7 @@ export default async function PublicEventPage({ params }: Props) {
   const guests = event.guests ?? []
   const totalGuests = guests.length
   const confirmedGuests = guests.filter((g) => g.rsvp_status === 'confirmed').length
+  const summary = calculateCostSummary(items, confirmedGuests)
 
   const currentGuest =
     session?.eventId === event.id ? guests.find((g) => g.id === session.guestId) : null
@@ -77,7 +79,9 @@ export default async function PublicEventPage({ params }: Props) {
         </div>
 
         <div className="flex flex-col items-center py-4">
-          <p className="text-2xl font-semibold text-primary">R$0</p>
+          <p className="text-2xl font-semibold text-primary">
+            {formatCurrency(summary.costPerPerson)}
+          </p>
           <p className="text-xs text-muted-foreground mt-0.5">por pessoa</p>
         </div>
       </div>
