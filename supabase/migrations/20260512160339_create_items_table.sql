@@ -5,7 +5,7 @@ create table public.items (
     estimated_cost      numeric(10,2)   check (estimated_cost >= 0),
     assigned_guest_id   uuid            references public.guests(id) on delete set null,
     created_by_host     boolean         not null default false,
-    creted_at           timestamptz     not null default now()
+    created_at           timestamptz     not null default now()
 );
 
 -- Lookup all items for an event (items board)

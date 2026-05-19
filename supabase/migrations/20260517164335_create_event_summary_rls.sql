@@ -16,7 +16,7 @@ select
     count(g.id)                                             as total_guests,
     count(g.id) filter (where g.rsvp_status = 'confirmed')  as confirmed_guests,
     count(g.id) filter (where g.rsvp_status = 'declined')   as declined_guests,
-    count(g.id) filter (where g.rsvp_status = 'pending')    as pending_guests,
+    count(g.id) filter (where g.rsvp_status = 'pending')    as pending_guests
 from public.events e
 left join public.guests g on g.event_id = e.id
 group by e.id;
@@ -27,7 +27,7 @@ create view public.host_stats
     with (security_invoker = true)
 as
 select
-    e.host_id
+    e.host_id,
     count(distinct e.id)                                    as total_events,
     count(distinct case when e.date < now() then e.id end)  as past_events,
     count(distinct g.id)                                    as total_guests,

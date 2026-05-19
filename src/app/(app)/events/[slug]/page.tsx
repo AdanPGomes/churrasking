@@ -2,12 +2,14 @@ import { notFound } from 'next/navigation'
 
 import { Guest } from '@/types'
 import { Progress } from '@/components/ui/progress'
+import { getEventItems } from '@/lib/queries/items'
 import { createClient } from '@/lib/supabase/server'
 import { getEventBySlug } from '@/lib/queries/events'
 import { StatCard } from '@/components/common/stat-card'
 import { GuestList } from '@/components/events/guest-list'
-import { PageHeader } from '@/components/layout/page-header'
+import { ItemsBoard } from '@/components/items/items-board'
 import { HeroLayout } from '@/components/layout/hero-layout'
+import { PageHeader } from '@/components/layout/page-header'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { EventHeroActions } from '@/components/events/event-hero-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -19,9 +21,12 @@ type Props = {
 export default async function EventDetailPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
+
   const event = await getEventBySlug(supabase, slug)
 
   if (!event) notFound()
+
+  const items = await getEventItems(supabase, event.id)
 
   const formattedDate = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'short',
@@ -132,16 +137,7 @@ export default async function EventDetailPage({ params }: Props) {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-              Itens e custos
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Gerenciamento de itens disponível em breve.</p>
-          </CardContent>
-        </Card>
+        <ItemsBoard eventId={event.id} eventSlug={event.slug} items={items} />
       </div>
     </HeroLayout>
   )

@@ -9,6 +9,8 @@ import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { PublicGuestList } from '@/components/guest/public-guest-list'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GuestIdentificationForm } from '@/components/guest/guest-identification-form'
+import { GuestItemsBoard } from '@/components/items/guest-items-board'
+import { getEventItems } from '@/lib/queries/items'
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -24,6 +26,8 @@ export default async function PublicEventPage({ params }: Props) {
   ])
 
   if (!event) notFound()
+
+  const items = await getEventItems(supabase, event.id)
 
   const formattedDate = new Intl.DateTimeFormat('pt-BR', {
     weekday: 'short',
@@ -99,18 +103,7 @@ export default async function PublicEventPage({ params }: Props) {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-            O que levar
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground text-center py-4">
-            Lista de itens disponível em breve.
-          </p>
-        </CardContent>
-      </Card>
+      <GuestItemsBoard currentGuestId={currentGuest?.id} eventSlug={slug} items={items} />
     </HeroLayout>
   )
 }
