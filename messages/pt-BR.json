@@ -1,0 +1,150 @@
+{
+  "Auth": {
+    "login": "Entrar",
+    "register": "Criar conta",
+    "logout": "Sair",
+    "loginTitle": "Entrar na conta",
+    "registerTitle": "Criar conta",
+    "loginDescription": "Organize o seu próximo churrasco em minutos.",
+    "registerDescription": "Crie sua conta e comece a organizar.",
+    "name": "Nome",
+    "email": "E-mail",
+    "password": "Senha",
+    "confirmPassword": "Confirme a senha",
+    "submitting": "Entrando...",
+    "registering": "Criando conta...",
+    "tagline": "Crie eventos · Convide amigos · Divida os custos",
+    "welcome": "Bem-vindo, <gold>rei do churrasco!</gold>",
+    "welcomeDescription": "Organize o evento perfeito e convide a galera."
+  },
+  "Dashboard": {
+    "greetingMorning": "Bom dia",
+    "greetingAfternoon": "Boa tarde",
+    "greetingEvening": "Boa noite",
+    "upcomingEvents_one": "Você tem {count} evento próximo esta semana.",
+    "upcomingEvents_other": "Você tem {count} eventos próximos esta semana.",
+    "noEvents": "Nenhum evento criado ainda.",
+    "myEvents": "Meus churrascos",
+    "newEvent": "Novo churrasco",
+    "emptyTitle": "Cadê o churrasco, rei?",
+    "emptyDescription": "Crie seu primeiro evento e compartilhe o link com os amigos.",
+    "emptyAction": "Criar primeiro churrasco",
+    "stats": {
+      "events": "eventos",
+      "pastEvents": "{count} passados",
+      "guests": "convidados",
+      "totalHistoric": "total histórico",
+      "confirmations": "confirmações",
+      "averageRate": "taxa média"
+    }
+  },
+  "Events": {
+    "createTitle": "Criar evento",
+    "createDescription": "Preencha os detalhes e compartilhe o link com seus convidados.",
+    "editTitle": "Editar evento",
+    "breadcrumbDashboard": "Dashboard",
+    "breadcrumbNew": "Novo churrasco",
+    "fields": {
+      "title": "Título do evento",
+      "titlePlaceholder": "Ex: Churrasco do Aniversário",
+      "description": "Descrição",
+      "descriptionPlaceholder": "Conta um pouco sobre o evento...",
+      "date": "Data",
+      "time": "Horário",
+      "location": "Local",
+      "locationPlaceholder": "Ex: Quintal do Adan",
+      "cover": "Foto de capa",
+      "coverHint": "Toque para enviar uma imagem",
+      "coverSize": "PNG, JPG até 5MB"
+    },
+    "items": {
+      "sectionTitle": "Itens necessários",
+      "sectionDescription": "Os convidados podem se voluntariar para trazer.",
+      "namePlaceholder": "Ex: Picanha 2kg...",
+      "addItem": "Adicionar item",
+      "noItems": "Nenhum item ainda. Adicione abaixo.",
+      "boardTitle": "Itens do evento",
+      "free": "Livre",
+      "removeItem": "Remover item"
+    },
+    "actions": {
+      "create": "Criar churrasco",
+      "creating": "Criando...",
+      "save": "Salvar alterações",
+      "saving": "Salvando...",
+      "cancel": "Cancelar",
+      "copyLink": "Copiar link",
+      "copied": "Copiado",
+      "edit": "Editar",
+      "delete": "Excluir",
+      "confirmDelete": "Excluir evento?",
+      "confirmDeleteDescription": "Esta ação não pode ser desfeita. O evento e todos os dados associados — convidados e itens — serão removidos permanentemente.",
+      "deleting": "Excluindo...",
+      "viewDetails": "Ver detalhes"
+    },
+    "stats": {
+      "guests": "convidados",
+      "confirmed": "confirmados",
+      "perPerson": "por pessoa",
+      "estimated": "estimado",
+      "pending": "{count} pendentes",
+      "declined": "{count} recusaram",
+      "confirmationRate": "Taxa de confirmação"
+    },
+    "guests": {
+      "sectionTitle": "Convidados",
+      "noGuests": "Nenhum convidado ainda.",
+      "confirmed": "Confirmado",
+      "declined": "Recusou",
+      "pending": "Pendente"
+    },
+    "costs": {
+      "sectionTitle": "Resumo de custos",
+      "noItems": "Adicione itens com custo estimado para ver o resumo.",
+      "total": "Total estimado",
+      "covered": "Itens cobertos",
+      "uncovered": "Sem responsável",
+      "confirmedGuests_one": "{count} pessoa",
+      "confiemedGuests_other": "{count} pessoas",
+      "perPerson": "Custo por pessoa",
+      "uncoveredItems": "Itens sem responsável",
+      "byGuest": "Por convidado"
+    },
+    "card": {
+      "noLocation": "Sem local definido",
+      "confirmed": "{confirmed} de {total} confirmados"
+    }
+  },
+  "Public": {
+    "organizedBy": "organizado por {name}",
+    "identification": {
+      "title": "Você está aqui?",
+      "description": "Informe seus dados para confirmar presença.",
+      "namePlaceholder": "João Silva",
+      "submit": "Entrar no churrasco",
+      "submitting": "Entrando..."
+    },
+    "rsvp": {
+      "title": "Sua presença",
+      "confirm": "Vou sim!",
+      "decline": "Não vou"
+    },
+    "guestList": {
+      "title": "Quem vem",
+      "noGuests": "Nenhum convidado ainda.",
+      "you": "(você)"
+    },
+    "items": {
+      "title": "O que levar",
+      "noItems": "Nenhum item cadastrado ainda.",
+      "claim": "Pego eu",
+      "unclaim": "Vou levar"
+    }
+  },
+  "Common": {
+    "optional": "(opcional)",
+    "back": "Voltar",
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro. Tente novamente."
+  }
+}

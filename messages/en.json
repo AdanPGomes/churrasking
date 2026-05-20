@@ -1,0 +1,150 @@
+{
+  "Auth": {
+    "login": "Sign in",
+    "register": "Create account",
+    "logout": "Log out",
+    "loginTitle": "Sign in to your account",
+    "registerTitle": "Create account",
+    "loginDescription": "Organize your next BBQ in minutes.",
+    "registerDescription": "Create your account and start organizing.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "submitting": "Signing in...",
+    "registering": "Creating account...",
+    "tagline": "Create events · Invite friends · Split costs",
+    "welcome": "Welcome, <gold>BBQ king!</gold>",
+    "welcomeDescription": "Organize the perfect event and invite your crew."
+  },
+  "Dashboard": {
+    "greeting_morning": "Good morning",
+    "greeting_afternoon": "Good afternoon",
+    "greeting_evening": "Good evening",
+    "upcomingEvents_one": "You have {count} upcoming event this week.",
+    "upcomingEvents_other": "You have {count} upcoming events this week.",
+    "noEvents": "No events created yet.",
+    "myEvents": "My BBQs",
+    "newEvent": "New BBQ",
+    "emptyTitle": "Where's the BBQ, king?",
+    "emptyDescription": "Create your first event and share the link with your friends.",
+    "emptyAction": "Create first BBQ",
+    "stats": {
+      "events": "events",
+      "pastEvents": "{count} past",
+      "guests": "guests",
+      "totalHistoric": "all time",
+      "confirmations": "confirmations",
+      "averageRate": "average rate"
+    }
+  },
+  "Events": {
+    "createTitle": "Create event",
+    "createDescription": "Fill in the details and share the link with your guests.",
+    "editTitle": "Edit event",
+    "breadcrumbDashboard": "Dashboard",
+    "breadcrumbNew": "New BBQ",
+    "fields": {
+      "title": "Event title",
+      "titlePlaceholder": "Ex: Birthday BBQ",
+      "description": "Description",
+      "descriptionPlaceholder": "Tell your guests a bit about the event...",
+      "date": "Date",
+      "time": "Time",
+      "location": "Location",
+      "locationPlaceholder": "Ex: Adan's backyard",
+      "cover": "Cover image",
+      "coverHint": "Tap to upload an image",
+      "coverSize": "PNG, JPG up to 5MB"
+    },
+    "items": {
+      "sectionTitle": "Items needed",
+      "sectionDescription": "Guests can volunteer to bring items from this list.",
+      "namePlaceholder": "Ex: Ribeye steak 2kg...",
+      "addItem": "Add item",
+      "noItems": "No items yet. Add one below.",
+      "boardTitle": "Event items",
+      "free": "Available",
+      "removeItem": "Remove item"
+    },
+    "actions": {
+      "create": "Create BBQ",
+      "creating": "Creating...",
+      "save": "Save changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "copyLink": "Copy link",
+      "copied": "Copied",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Delete event?",
+      "confirmDeleteDescription": "This action cannot be undone. The event and all associated data — guests and items — will be permanently removed.",
+      "deleting": "Deleting...",
+      "viewDetails": "View details"
+    },
+    "stats": {
+      "guests": "guests",
+      "confirmed": "confirmed",
+      "perPerson": "per person",
+      "estimated": "estimated",
+      "pending": "{count} pending",
+      "declined": "{count} declined",
+      "confirmationRate": "Confirmation rate"
+    },
+    "guests": {
+      "sectionTitle": "Guests",
+      "noGuests": "No guests yet.",
+      "confirmed": "Confirmed",
+      "declined": "Declined",
+      "pending": "Pending"
+    },
+    "costs": {
+      "sectionTitle": "Cost summary",
+      "noItems": "Add items with estimated cost to see the summary.",
+      "total": "Total estimated",
+      "covered": "Covered items",
+      "uncovered": "Without owner",
+      "confirmedGuests_one": "{count} person",
+      "confirmedGuests_other": "{count} people",
+      "perPerson": "Cost per person",
+      "uncoveredItems": "Items without owner",
+      "byGuest": "By guest"
+    },
+    "card": {
+      "noLocation": "No location defined",
+      "confirmed": "{confirmed} of {total} confirmed"
+    }
+  },
+  "Public": {
+    "organizedBy": "organized by {name}",
+    "identification": {
+      "title": "Are you here?",
+      "description": "Enter your details to confirm your attendance.",
+      "namePlaceholder": "John Smith",
+      "submit": "Join the BBQ",
+      "submitting": "Joining..."
+    },
+    "rsvp": {
+      "title": "Your attendance",
+      "confirm": "I'm in!",
+      "decline": "Can't make it"
+    },
+    "guestList": {
+      "title": "Who's coming",
+      "noGuests": "No guests yet.",
+      "you": "(you)"
+    },
+    "items": {
+      "title": "What to bring",
+      "noItems": "No items added yet.",
+      "claim": "I'll bring it",
+      "unclaim": "Bringing it"
+    }
+  },
+  "Common": {
+    "optional": "(optional)",
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "An error occurred. Please try again."
+  }
+}
