@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -31,12 +31,14 @@ export async function EventCard({
   confirmedGuests,
 }: EventCardProps) {
   const t = await getTranslations('Events')
+  const format = await getFormatter()
+
   const isPast = date < new Date()
 
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+  const formattedDate = format.dateTime(date, {
     day: 'numeric',
     month: 'short',
-  }).format(date)
+  })
 
   const progressValue = totalGuests > 0 ? (confirmedGuests / totalGuests) * 100 : 0
 

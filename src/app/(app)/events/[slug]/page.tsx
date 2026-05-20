@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { Guest } from '@/types'
 import { Progress } from '@/components/ui/progress'
@@ -13,7 +13,7 @@ import { HeroLayout } from '@/components/layout/hero-layout'
 import { PageHeader } from '@/components/layout/page-header'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { CostSummaryCard } from '@/components/items/cost-summary-card'
-import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { calculateCostSummary } from '@/lib/utils/cost'
 import { RealtimeProvider } from '@/components/common/realtime-provider'
 import { EventHeroActions } from '@/components/events/event-hero-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -30,17 +30,17 @@ export default async function EventDetailPage({ params }: Props) {
   if (!event) notFound()
 
   const t = await getTranslations('Events')
+  const format = await getFormatter()
 
   const items = await getEventItems(supabase, event.id)
 
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+  const formattedDate = format.dateTime(new Date(event.date), {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/Sao_Paulo',
-  }).format(new Date(event.date))
+  })
 
   const totalGuests = Number(event.total_guests)
   const confirmedGuests = Number(event.confirmed_guests)
@@ -91,7 +91,10 @@ export default async function EventDetailPage({ params }: Props) {
                 <StatCard
                   variant="dark"
                   label={t('stats.perPerson')}
-                  value={formatCurrency(summary.costPerPerson)}
+                  value={format.number(summary.costPerPerson, {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
                   sub={t('stats.estimated')}
                   valueClassName="text-primary"
                 />
@@ -115,7 +118,7 @@ export default async function EventDetailPage({ params }: Props) {
               <StatCard
                 variant="dark"
                 label={t('stats.perPerson')}
-                value={formatCurrency(summary.costPerPerson)}
+                value={format.number(summary.costPerPerson, { style: 'currency', currency: 'BRL' })}
                 sub={t('stats.estimated')}
                 valueClassName="text-primary"
               />

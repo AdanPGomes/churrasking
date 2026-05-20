@@ -1,5 +1,5 @@
 import { Trash2 } from 'lucide-react'
-import { getTranslations } from 'next-intl/server'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
 import { deleteItem } from '@/actions/items'
@@ -31,9 +31,10 @@ type HostItemRowProps = {
   item: Item
   eventSlug: string
   t: Awaited<ReturnType<typeof getTranslations>>
+  format: Awaited<ReturnType<typeof getFormatter>>
 }
 
-function HostItemRow({ item, eventSlug, t }: HostItemRowProps) {
+function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
   const guestName = getGuestName(item.guests)
   const isClaimed = !!item.assigned_guest_id
 
@@ -44,10 +45,7 @@ function HostItemRow({ item, eventSlug, t }: HostItemRowProps) {
         {item.estimated_cost && (
           <p className="text-xs text-muted-foreground mt-0.5">
             <span className="mr-1">~</span>
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            }).format(item.estimated_cost)}
+            {format.number(item.estimated_cost, { style: 'currency', currency: 'BRL' })}
           </p>
         )}
       </div>
@@ -85,6 +83,7 @@ function HostItemRow({ item, eventSlug, t }: HostItemRowProps) {
 
 export async function ItemsBoard({ eventId, eventSlug, items }: ItemsBoardProps) {
   const t = await getTranslations('Events')
+  const format = await getFormatter()
 
   return (
     <Card>
@@ -98,7 +97,9 @@ export async function ItemsBoard({ eventId, eventSlug, items }: ItemsBoardProps)
         {items.length === 0 ? (
           <p className="text-sm text-muted-foreground text-center py-4">{t('items.noItems')}</p>
         ) : (
-          items.map((item) => <HostItemRow key={item.id} item={item} eventSlug={eventSlug} t={t} />)
+          items.map((item) => (
+            <HostItemRow key={item.id} item={item} eventSlug={eventSlug} t={t} format={format} />
+          ))
         )}
 
         <AddItemForm eventId={eventId} eventSlug={eventSlug} />

@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getTranslations } from 'next-intl/server'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { getEventItems } from '@/lib/queries/items'
 import { createClient } from '@/lib/supabase/server'
@@ -10,7 +10,7 @@ import { RsvpButtons } from '@/components/guest/rsvp-buttons'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { GuestItemsBoard } from '@/components/items/guest-items-board'
 import { PublicGuestList } from '@/components/guest/public-guest-list'
-import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { calculateCostSummary } from '@/lib/utils/cost'
 import { RealtimeProvider } from '@/components/common/realtime-provider'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { GuestIdentificationForm } from '@/components/guest/guest-identification-form'
@@ -30,17 +30,17 @@ export default async function PublicEventPage({ params }: Props) {
   if (!event) notFound()
 
   const t = await getTranslations('Public')
+  const format = await getFormatter()
 
   const items = await getEventItems(supabase, event.id)
 
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+  const formattedDate = format.dateTime(new Date(event.date), {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/Sao_Paulo',
-  }).format(new Date(event.date))
+  })
 
   const guests = event.guests ?? []
   const totalGuests = guests.length
@@ -85,7 +85,7 @@ export default async function PublicEventPage({ params }: Props) {
 
         <div className="flex flex-col items-center py-4">
           <p className="text-2xl font-semibold text-primary">
-            {formatCurrency(summary.costPerPerson)}
+            {format.number(summary.costPerPerson, { style: 'currency', currency: 'BRL' })}
           </p>
           <p className="text-xs text-muted-foreground mt-0.5">{t('items.perPerson')}</p>
         </div>

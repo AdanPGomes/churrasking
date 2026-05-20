@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { Check } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { useFormatter, useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
 import { claimItem, unclaimItem } from '@/actions/items'
@@ -33,9 +33,10 @@ type GuestItemRowProps = {
   eventSlug: string
   currentGuestId?: string
   t: ReturnType<typeof useTranslations>
+  format: ReturnType<typeof useFormatter>
 }
 
-function GuestItemRow({ item, eventSlug, currentGuestId, t }: GuestItemRowProps) {
+function GuestItemRow({ item, eventSlug, currentGuestId, t, format }: GuestItemRowProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -67,10 +68,7 @@ function GuestItemRow({ item, eventSlug, currentGuestId, t }: GuestItemRowProps)
           {item.estimated_cost && (
             <p className="text-xs text-muted-foreground mt-0.5">
               <span className="mr-1">~</span>
-              {new Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-              }).format(item.estimated_cost)}
+              {format.number(item.estimated_cost, { style: 'currency', currency: 'BRL' })}
             </p>
           )}
         </div>
@@ -110,6 +108,7 @@ function GuestItemRow({ item, eventSlug, currentGuestId, t }: GuestItemRowProps)
 
 export function GuestItemsBoard({ items, eventSlug, currentGuestId }: GuestItemsBoardProps) {
   const t = useTranslations('Public')
+  const format = useFormatter()
 
   return (
     <Card>
@@ -130,6 +129,7 @@ export function GuestItemsBoard({ items, eventSlug, currentGuestId }: GuestItems
               eventSlug={eventSlug}
               currentGuestId={currentGuestId}
               t={t}
+              format={format}
             />
           ))
         )}
