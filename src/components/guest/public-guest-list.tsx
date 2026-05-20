@@ -44,13 +44,15 @@ export async function PublicGuestList({ guests, currentGuestId }: PublicGuestLis
             <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0">
               {initials}
             </div>
+
             <span className="flex-1 text-sm text-foreground">
               {guest.name}
               {isCurrentGuest && (
                 <span className="text-xs text-muted-foreground ml-1">{t('guestList.you')}</span>
               )}
             </span>
-            <Icon className={`h-4 w-4 shrink-0 ${config.className}`} />
+
+            <Icon className={`h-5 w-5 shrink-0 rounded-full p-0.5 ${config.className}`} />
           </div>
         )
       })}

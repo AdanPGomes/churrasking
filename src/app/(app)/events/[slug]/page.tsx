@@ -74,20 +74,22 @@ export default async function EventDetailPage({ params }: Props) {
                 {event.location && <EventMetaBadge variant="dark">{event.location}</EventMetaBadge>}
               </div>
 
-              <div className="grid grid-cols-3 gap-3 lg:hidden">
-                <StatCard
-                  variant="dark"
-                  label={t('stats.guests')}
-                  value={totalGuests}
-                  sub={t('stats.pending', { count: pendingGuests })}
-                />
-                <StatCard
-                  variant="dark"
-                  label={t('stats.confirmed')}
-                  value={confirmedGuests}
-                  sub={t('stats.declined', { count: declinedGuests })}
-                  valueClassName="text-green-400"
-                />
+              <div className="flex flex-col gap-2 lg:hidden">
+                <div className="grid grid-cols-2 gap-2">
+                  <StatCard
+                    variant="dark"
+                    label={t('stats.guests')}
+                    value={totalGuests}
+                    sub={t('stats.pending', { count: pendingGuests })}
+                  />
+                  <StatCard
+                    variant="dark"
+                    label={t('stats.confirmed')}
+                    value={confirmedGuests}
+                    sub={t('stats.declined', { count: declinedGuests })}
+                    valueClassName="text-green-400"
+                  />
+                </div>
                 <StatCard
                   variant="dark"
                   label={t('stats.perPerson')}
