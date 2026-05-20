@@ -1,4 +1,8 @@
 {
+  "Meta": {
+    "appName": "ChurrasKing",
+    "description": "Organize seu churrasco e convide os amigos"
+  },
   "Auth": {
     "login": "Entrar",
     "register": "Criar conta",
@@ -151,9 +155,16 @@
       "perPerson": "por pessoa"
     }
   },
+  "Offline": {
+    "error": "Sem conexão, rei",
+    "message": "Parece que você está sem internet. Reconecte-se para acessar seus churrascos."
+  },
   "Common": {
+    "mascotAlt": "ChurrasKing mascote",
     "optional": "(opcional)",
     "back": "Voltar",
+    "delete": "Excluir",
+    "cancel": "Cancelar",
     "loading": "Carregando...",
     "error": "Ocorreu um erro. Tente novamente."
   }

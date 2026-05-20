@@ -1,4 +1,8 @@
 {
+  "Meta": {
+    "appName": "BBQKing",
+    "description": "Organize your barbecue and invite your friends."
+  },
   "Auth": {
     "login": "Sign in",
     "register": "Create account",
@@ -152,8 +156,10 @@
     }
   },
   "Common": {
+    "mascotAlt": "BBQ King mascot",
     "optional": "(optional)",
     "back": "Back",
+    "cancel": "Cancel",
     "loading": "Loading...",
     "error": "An error occurred. Please try again."
   }

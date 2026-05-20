@@ -1,6 +1,6 @@
-import type { Metadata } from 'next'
+import type { Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages } from 'next-intl/server'
+import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 import { Geist, Geist_Mono, Figtree } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
@@ -19,12 +19,26 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
-export const metadata: Metadata = {
-  title: {
-    template: '%s — ChurrasKing',
-    default: 'ChurrasKing',
-  },
-  description: 'Organize barbecue with friends',
+export const viewport: Viewport = {
+  themeColor: '#F5A623',
+}
+
+export async function generateMetadata() {
+  const t = await getTranslations('Meta')
+
+  return {
+    title: {
+      template: `%s — ${t('appName')}`,
+      default: t('appName'),
+    },
+    description: t('description'),
+    manifest: '/manifest.json',
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: 'black-translucent',
+      title: t('appName'),
+    },
+  }
 }
 
 export default async function RootLayout({

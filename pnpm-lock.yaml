@@ -59,6 +59,9 @@ importers:
       react-hook-form:
         specifier: ^7.75.0
         version: 7.75.0(react@19.2.4)
+      serwist:
+        specifier: ^9.5.11
+        version: 9.5.11(browserslist@4.28.2)(typescript@5.9.3)
       shadcn:
         specifier: ^4.7.0
         version: 4.7.0(@types/node@20.19.41)(typescript@5.9.3)
