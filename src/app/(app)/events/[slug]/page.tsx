@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
@@ -20,6 +21,40 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const supabase = await createClient()
+  const event = await getEventBySlug(supabase, slug)
+
+  if (!event) {
+    return { title: 'Evento não encontrado' }
+  }
+
+  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'America/Sao_Paulo',
+  }).format(new Date(event.date))
+
+  const description = [formattedDate, event.location, `${event.confirmed_guests} confirmados`]
+    .filter(Boolean)
+    .join(' · ')
+
+  return {
+    title: event.title,
+    description,
+    robots: { index: false, follow: false },
+    openGraph: {
+      title: event.title,
+      description,
+      type: 'website',
+    },
+  }
 }
 
 export default async function EventDetailPage({ params }: Props) {

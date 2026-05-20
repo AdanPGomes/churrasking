@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
@@ -17,6 +18,56 @@ import { GuestIdentificationForm } from '@/components/guest/guest-identification
 
 type Props = {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const supabase = await createClient()
+  const event = await getPublicEventBySlug(supabase, slug)
+
+  if (!event) {
+    return { title: 'Evento não encontrado' }
+  }
+
+  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'America/Sao_Paulo',
+  }).format(new Date(event.date))
+
+  const hostName = Array.isArray(event.profiles)
+    ? event.profiles[0]?.name
+    : (event.profiles as { name: string } | null)?.name
+
+  const description = [
+    hostName ? `Organizado por ${hostName}` : null,
+    formattedDate,
+    event.location,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL!
+
+  return {
+    title: event.title,
+    description,
+    robots: { index: true, follow: true },
+    openGraph: {
+      title: event.title,
+      description,
+      type: 'website',
+      url: `${appUrl}/c/${slug}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: event.title,
+      description,
+    },
+  }
 }
 
 export default async function PublicEventPage({ params }: Props) {
