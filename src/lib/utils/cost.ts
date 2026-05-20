@@ -74,10 +74,3 @@ export function calculateCostSummary(items: Item[], confirmedGuests: number): Co
     guestBreakdown: Array.from(guestMap.values()),
   }
 }
-
-export function formatCurrency(value: number): string {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(value)
-}

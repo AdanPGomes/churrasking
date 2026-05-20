@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Check, Copy } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
 
@@ -10,6 +11,7 @@ type CopyLinkButtonProps = {
 }
 
 export function CopyLinkButton({ slug }: CopyLinkButtonProps) {
+  const t = useTranslations('Events')
   const [copied, setCopied] = useState(false)
 
   async function handleCopy() {
@@ -24,17 +26,17 @@ export function CopyLinkButton({ slug }: CopyLinkButtonProps) {
       size="sm"
       className="text-muted-foreground"
       onClick={handleCopy}
-      aria-label="Copiar link do evento"
+      aria-label={t('actions.copyLink')}
     >
       {copied ? (
         <>
           <Check className="h-3.5 w-3.5 mr-1" />
-          Copiado
+          {t('actions.copied')}
         </>
       ) : (
         <>
           <Copy className="h-3.5 w-3.5 mr-1" />
-          Copiar link
+          {t('actions.copyLink')}
         </>
       )}
     </Button>

@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -39,8 +40,9 @@ function toTimeInput(isoDate: string): string {
 }
 
 export function EditEventForm({ event }: EditEventFormProps) {
+  const t = useTranslations('Events')
+  const tCommon = useTranslations('Common')
   const router = useRouter()
-
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
 
@@ -65,8 +67,6 @@ export function EditEventForm({ event }: EditEventFormProps) {
     name: 'items',
   })
 
-  const today = new Date().toISOString().split('T')[0]
-
   async function onSubmit(data: z.output<typeof createEventSchema>) {
     setServerError(null)
 
@@ -90,23 +90,23 @@ export function EditEventForm({ event }: EditEventFormProps) {
           <ControlledFieldInput
             control={form.control}
             name="title"
-            label="Título do evento"
-            placeholder="Ex: Churrasco do Aniversário"
+            label={t('fields.title')}
+            placeholder={t('fields.titlePlaceholder')}
             required
           />
 
           <ControlledFieldTextArea
             control={form.control}
             name="description"
-            label="Descrição"
-            placeholder="Conta um pouco sobre o evento..."
+            label={t('fields.description')}
+            placeholder={t('fields.descriptionPlaceholder')}
           />
 
           <FieldGroup className="grid grid-cols-2 gap-4">
             <ControlledFieldInput
               control={form.control}
               name="date"
-              label="Data"
+              label={t('fields.date')}
               type="date"
               inputProps={{ min: new Date().toISOString().split('T')[0] }}
               required
@@ -115,7 +115,7 @@ export function EditEventForm({ event }: EditEventFormProps) {
             <ControlledFieldInput
               control={form.control}
               name="time"
-              label="Horário"
+              label={t('fields.time')}
               type="time"
               required
             />
@@ -124,19 +124,19 @@ export function EditEventForm({ event }: EditEventFormProps) {
           <ControlledFieldInput
             control={form.control}
             name="location"
-            label="Local"
-            placeholder="Ex: Quintal do Adan"
+            label={t('fields.location')}
+            placeholder={t('fields.locationPlaceholder')}
           />
         </FieldSet>
 
         <div className="flex flex-col gap-4">
-          <FileUploadField id="cover" label="Cover image" onChange={setCoverFile} />
+          <FileUploadField id="cover" label={t('fields.cover')} onChange={setCoverFile} />
 
           <Separator />
 
           <FieldSet className="flex flex-col">
-            <FieldLegend>Itens necessários</FieldLegend>
-            <FieldDescription>Os convidados podem se voluntariar para trazer.</FieldDescription>
+            <FieldLegend>{t('items.sectionTitle')}</FieldLegend>
+            <FieldDescription>{t('items.sectionDescription')}</FieldDescription>
 
             {fields.map((field, index) => (
               <ItemFieldRow
@@ -153,7 +153,7 @@ export function EditEventForm({ event }: EditEventFormProps) {
               onClick={() => append({ name: '', estimated_cost: undefined })}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Adicionar item
+              {t('items.addItem')}
             </Button>
           </FieldSet>
 
@@ -167,11 +167,11 @@ export function EditEventForm({ event }: EditEventFormProps) {
               disabled={form.formState.isSubmitting}
               aria-busy={form.formState.isSubmitting}
             >
-              {form.formState.isSubmitting ? 'Salvando...' : 'Salvar alterações'}
+              {form.formState.isSubmitting ? t('actions.saving') : t('actions.save')}
             </Button>
 
             <Button type="button" variant="outline" onClick={() => router.back()}>
-              Cancelar
+              {tCommon('cancel')}
             </Button>
           </div>
         </div>

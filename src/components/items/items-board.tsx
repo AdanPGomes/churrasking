@@ -1,4 +1,5 @@
 import { Trash2 } from 'lucide-react'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
 import { deleteItem } from '@/actions/items'
@@ -26,7 +27,14 @@ function getGuestName(guests: Item['guests']): string | null {
   return guest?.name ?? null
 }
 
-function HostItemRow({ item, eventSlug }: { item: Item; eventSlug: string }) {
+type HostItemRowProps = {
+  item: Item
+  eventSlug: string
+  t: Awaited<ReturnType<typeof getTranslations>>
+  format: Awaited<ReturnType<typeof getFormatter>>
+}
+
+function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
   const guestName = getGuestName(item.guests)
   const isClaimed = !!item.assigned_guest_id
 
@@ -37,10 +45,7 @@ function HostItemRow({ item, eventSlug }: { item: Item; eventSlug: string }) {
         {item.estimated_cost && (
           <p className="text-xs text-muted-foreground mt-0.5">
             <span className="mr-1">~</span>
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            }).format(item.estimated_cost)}
+            {format.number(item.estimated_cost, { style: 'currency', currency: 'BRL' })}
           </p>
         )}
       </div>
@@ -51,7 +56,7 @@ function HostItemRow({ item, eventSlug }: { item: Item; eventSlug: string }) {
         </span>
       ) : (
         <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full shrink-0">
-          Livre
+          {t('items.free')}
         </span>
       )}
 
@@ -66,7 +71,7 @@ function HostItemRow({ item, eventSlug }: { item: Item; eventSlug: string }) {
           variant="ghost"
           size="icon"
           disabled={isClaimed}
-          aria-label="Remover item"
+          aria-label={t('items.removeItem')}
           className={cn('h-7 w-7 shrink-0', isClaimed && 'opacity-30 cursor-not-allowed')}
         >
           <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
@@ -76,22 +81,25 @@ function HostItemRow({ item, eventSlug }: { item: Item; eventSlug: string }) {
   )
 }
 
-export function ItemsBoard({ eventId, eventSlug, items }: ItemsBoardProps) {
+export async function ItemsBoard({ eventId, eventSlug, items }: ItemsBoardProps) {
+  const t = await getTranslations('Events')
+  const format = await getFormatter()
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-          Itens do evento
+          {t('items.boardTitle')}
         </CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col">
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
-            Nenhum item ainda. Adicione abaixo.
-          </p>
+          <p className="text-sm text-muted-foreground text-center py-4">{t('items.noItems')}</p>
         ) : (
-          items.map((item) => <HostItemRow key={item.id} item={item} eventSlug={eventSlug} />)
+          items.map((item) => (
+            <HostItemRow key={item.id} item={item} eventSlug={eventSlug} t={t} format={format} />
+          ))
         )}
 
         <AddItemForm eventId={eventId} eventSlug={eventSlug} />

@@ -1,7 +1,11 @@
 import type { Metadata } from 'next'
+import { NextIntlClientProvider } from 'next-intl'
+import { getLocale, getMessages } from 'next-intl/server'
 import { Geist, Geist_Mono, Figtree } from 'next/font/google'
-import './globals.css'
+
 import { cn } from '@/lib/utils'
+
+import './globals.css'
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' })
 
@@ -23,14 +27,17 @@ export const metadata: Metadata = {
   description: 'Organize barbecue with friends',
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const locale = await getLocale()
+  const messages = await getMessages()
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={cn(
         'h-full',
         'antialiased',
@@ -40,7 +47,9 @@ export default function RootLayout({
         figtree.variable
       )}
     >
-      <body className="min-h-screen flex flex-col bg-[#FFF8F0]">{children}</body>
+      <body className="min-h-screen flex flex-col bg-background">
+        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+      </body>
     </html>
   )
 }

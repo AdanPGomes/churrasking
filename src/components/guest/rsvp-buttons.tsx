@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { Check, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import { updateRsvp } from '@/actions/guests'
 import { Button } from '@/components/ui/button'
@@ -14,6 +15,7 @@ type RsvpButtonsProps = {
 }
 
 export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
+  const t = useTranslations('Public')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -36,7 +38,7 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base font-medium">Sua presença</CardTitle>
+        <CardTitle className="text-base font-medium">{t('rsvp.title')}</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
         <div className="grid grid-cols-2 gap-3">
@@ -51,7 +53,7 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
             }
           >
             <Check className="h-4 w-4 mr-2" />
-            Vou sim!
+            {t('rsvp.confirm')}
           </Button>
 
           <Button
@@ -62,7 +64,7 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
             className={currentStatus === 'declined' ? 'border-destructive text-destructive' : ''}
           >
             <X className="h-4 w-4 mr-2" />
-            Não vou
+            {t('rsvp.decline')}
           </Button>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}

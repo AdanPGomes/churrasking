@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { login } from '@/actions/auth'
@@ -11,6 +12,7 @@ import { FormErrorAlert } from '@/components/common/form-error-alert'
 import { ControlledFieldInput } from '@/components/common/controlled-field-input'
 
 export function LoginForm() {
+  const t = useTranslations('Auth')
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<LoginInput>({
@@ -32,7 +34,7 @@ export function LoginForm() {
       <ControlledFieldInput
         control={form.control}
         name="email"
-        label="E-mail"
+        label={t('email')}
         type="email"
         required
         autoComplete="email"
@@ -40,7 +42,7 @@ export function LoginForm() {
       <ControlledFieldInput
         control={form.control}
         name="password"
-        label="Senha"
+        label={t('password')}
         type="password"
         required
         autoComplete="current-password"
@@ -54,7 +56,7 @@ export function LoginForm() {
         disabled={form.formState.isSubmitting}
         aria-busy={form.formState.isSubmitting}
       >
-        {form.formState.isSubmitting ? 'Entrando...' : 'Entrar'}
+        {form.formState.isSubmitting ? t('submitting') : t('login')}
       </Button>
     </form>
   )

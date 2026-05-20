@@ -1,4 +1,7 @@
+'use client'
+
 import { X } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { Control, FieldValues, Path } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
@@ -17,13 +20,15 @@ export function ItemFieldRow<T extends FieldValues>({
   control,
   onRemove,
 }: ItemFieldRowProps<T>) {
+  const t = useTranslations('Events')
+
   return (
     <FieldGroup className="flex flex-row items-center">
       <ControlledFieldInput
         control={control}
         name={`items.${index}.name` as Path<T>}
         label={`items.${index}.name`}
-        placeholder="Filet Mignon"
+        placeholder={t('items.namePlaceholder')}
         hideLabel
         required
       />
@@ -41,7 +46,7 @@ export function ItemFieldRow<T extends FieldValues>({
         variant="ghost"
         size="icon"
         onClick={onRemove}
-        aria-label={`Remove item ${index + 1}`}
+        aria-label={t('items.removeItem')}
       >
         <X className="h-4 w-4" />
       </Button>

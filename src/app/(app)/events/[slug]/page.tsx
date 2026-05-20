@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { Guest } from '@/types'
 import { Progress } from '@/components/ui/progress'
@@ -12,7 +13,7 @@ import { HeroLayout } from '@/components/layout/hero-layout'
 import { PageHeader } from '@/components/layout/page-header'
 import { EventMetaBadge } from '@/components/common/event-meta-badge'
 import { CostSummaryCard } from '@/components/items/cost-summary-card'
-import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { calculateCostSummary } from '@/lib/utils/cost'
 import { RealtimeProvider } from '@/components/common/realtime-provider'
 import { EventHeroActions } from '@/components/events/event-hero-actions'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -26,19 +27,20 @@ export default async function EventDetailPage({ params }: Props) {
   const supabase = await createClient()
 
   const event = await getEventBySlug(supabase, slug)
-
   if (!event) notFound()
+
+  const t = await getTranslations('Events')
+  const format = await getFormatter()
 
   const items = await getEventItems(supabase, event.id)
 
-  const formattedDate = new Intl.DateTimeFormat('pt-BR', {
+  const formattedDate = format.dateTime(new Date(event.date), {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
     hour: '2-digit',
     minute: '2-digit',
-    timeZone: 'America/Sao_Paulo',
-  }).format(new Date(event.date))
+  })
 
   const totalGuests = Number(event.total_guests)
   const confirmedGuests = Number(event.confirmed_guests)
@@ -60,7 +62,10 @@ export default async function EventDetailPage({ params }: Props) {
               <PageHeader
                 variant="dark"
                 title={event.title}
-                breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: event.title }]}
+                breadcrumbs={[
+                  { label: t('breadcrumbDashboard'), href: '/dashboard' },
+                  { label: event.title },
+                ]}
                 className="mb-0"
               />
 
@@ -72,22 +77,25 @@ export default async function EventDetailPage({ params }: Props) {
               <div className="grid grid-cols-3 gap-3 lg:hidden">
                 <StatCard
                   variant="dark"
-                  label="convidados"
+                  label={t('stats.guests')}
                   value={totalGuests}
-                  sub={`${pendingGuests} pendentes`}
+                  sub={t('stats.pending', { count: pendingGuests })}
                 />
                 <StatCard
                   variant="dark"
-                  label="confirmados"
+                  label={t('stats.confirmed')}
                   value={confirmedGuests}
-                  sub={`${declinedGuests} recusaram`}
+                  sub={t('stats.declined', { count: declinedGuests })}
                   valueClassName="text-green-400"
                 />
                 <StatCard
                   variant="dark"
-                  label="por pessoa"
-                  value={formatCurrency(summary.costPerPerson)}
-                  sub="estimado"
+                  label={t('stats.perPerson')}
+                  value={format.number(summary.costPerPerson, {
+                    style: 'currency',
+                    currency: 'BRL',
+                  })}
+                  sub={t('stats.estimated')}
                   valueClassName="text-primary"
                 />
               </div>
@@ -96,22 +104,22 @@ export default async function EventDetailPage({ params }: Props) {
             <div className="hidden lg:flex gap-3 shrink-0">
               <StatCard
                 variant="dark"
-                label="convidados"
+                label={t('stats.guests')}
                 value={totalGuests}
-                sub={`${pendingGuests} pendentes`}
+                sub={t('stats.pending', { count: pendingGuests })}
               />
               <StatCard
                 variant="dark"
-                label="confirmados"
+                label={t('stats.confirmed')}
                 value={confirmedGuests}
-                sub={`${declinedGuests} recusaram`}
+                sub={t('stats.declined', { count: declinedGuests })}
                 valueClassName="text-green-400"
               />
               <StatCard
                 variant="dark"
-                label="por pessoa"
-                value="R$0"
-                sub="estimado"
+                label={t('stats.perPerson')}
+                value={format.number(summary.costPerPerson, { style: 'currency', currency: 'BRL' })}
+                sub={t('stats.estimated')}
                 valueClassName="text-primary"
               />
             </div>
@@ -119,7 +127,7 @@ export default async function EventDetailPage({ params }: Props) {
 
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-xs text-white/50">
-              <span>Taxa de confirmação</span>
+              <span>{t('stats.confirmationRate')}</span>
               <span>{Math.round(progressValue)}%</span>
             </div>
             <Progress value={progressValue} className="h-1.5" />
@@ -133,11 +141,11 @@ export default async function EventDetailPage({ params }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-              Convidados
+              {t('guests.sectionTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <GuestList guests={(event.guests ?? []) as Guest[]} />
+            <GuestList guests={(event.guests ?? []) as Guest[]} t={t} />
           </CardContent>
         </Card>
 

@@ -1,5 +1,7 @@
+import { getFormatter, getTranslations } from 'next-intl/server'
+
 import { Separator } from '@/components/ui/separator'
-import { calculateCostSummary, formatCurrency } from '@/lib/utils/cost'
+import { calculateCostSummary } from '@/lib/utils/cost'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 type Item = {
@@ -15,7 +17,10 @@ type CostSummaryCardProps = {
   confirmedGuests: number
 }
 
-export function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps) {
+export async function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps) {
+  const t = await getTranslations('Events')
+  const format = await getFormatter()
+
   const summary = calculateCostSummary(items, confirmedGuests)
   const hasItems = items.some((i) => i.estimated_cost !== null)
 
@@ -24,13 +29,11 @@ export function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps
       <Card>
         <CardHeader>
           <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-            Resumo de custos
+            {t('costs.sectionTitle')}
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm text-muted-foreground text-center py-4">
-            Adicione itens com custo estimado para ver o resumo.
-          </p>
+          <p className="text-sm text-muted-foreground text-center py-4">{t('costs.noItems')}</p>
         </CardContent>
       </Card>
     )
@@ -40,44 +43,48 @@ export function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-          Resumo de custos
+          {t('costs.sectionTitle')}
         </CardTitle>
       </CardHeader>
 
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Total estimado</span>
-            <span className="font-medium">{formatCurrency(summary.totalEstimated)}</span>
-          </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Itens cobertos</span>
-            <span className="font-medium text-green-600">
-              {formatCurrency(summary.totalCovered)}
-            </span>
-          </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Sem responsável</span>
-            <span className="font-medium text-destructive">
-              {formatCurrency(summary.totalUncovered)}
-            </span>
-          </div>
-
-          <div className="flex justify-between text-sm">
-            <span className="text-muted-foreground">Confirmados</span>
+            <span className="text-muted-foreground">{t('costs.total')}</span>
             <span className="font-medium">
-              {confirmedGuests} pessoa{confirmedGuests !== 1 ? 's' : ''}
+              {format.number(summary.totalEstimated, { style: 'currency', currency: 'BRL' })}
+            </span>
+          </div>
+
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{t('costs.covered')}</span>
+            <span className="font-medium text-green-600">
+              {format.number(summary.totalCovered, { style: 'currency', currency: 'BRL' })}
+            </span>
+          </div>
+
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{t('costs.uncovered')}</span>
+            <span className="font-medium text-destructive">
+              {format.number(summary.totalUncovered, { style: 'currency', currency: 'BRL' })}
+            </span>
+          </div>
+
+          <div className="flex justify-between text-sm">
+            <span className="text-muted-foreground">{t('costs.confirmed')}</span>
+            <span className="font-medium">
+              {t('costs.confirmedGuests', { count: confirmedGuests })}
             </span>
           </div>
         </div>
 
         <div className="bg-primary/10 rounded-xl px-4 py-3 flex justify-between items-center">
-          <span className="text-sm font-medium text-primary-foreground/80">Custo por pessoa</span>
+          <span className="text-sm font-medium text-primary-foreground/80">
+            {t('costs.perPerson')}
+          </span>
 
           <span className="text-xl font-semibold text-primary">
-            {formatCurrency(summary.costPerPerson)}
+            {format.number(summary.costPerPerson, { style: 'currency', currency: 'BRL' })}
           </span>
         </div>
 
@@ -87,13 +94,15 @@ export function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps
 
             <div className="flex flex-col gap-2">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Itens sem responsável
+                {t('costs.uncoveredItems')}
               </p>
 
               {summary.uncoveredItems.map((item) => (
                 <div key={item.name} className="flex justify-between text-sm">
                   <span className="text-muted-foreground truncate">{item.name}</span>
-                  <span className="shrink-0 ml-2">{formatCurrency(item.cost)}</span>
+                  <span className="shrink-0 ml-2">
+                    {format.number(item.cost, { style: 'currency', currency: 'BRL' })}
+                  </span>
                 </div>
               ))}
             </div>
@@ -106,21 +115,23 @@ export function CostSummaryCard({ items, confirmedGuests }: CostSummaryCardProps
 
             <div className="flex flex-col gap-3">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                Por convidado
+                {t('costs.byGuest')}
               </p>
 
               {summary.guestBreakdown.map((guest) => (
                 <div key={guest.guestId} className="flex flex-col gap-1">
                   <div className="flex justify-between text-sm">
                     <span className="font-medium">{guest.guestName}</span>
-                    <span className="font-medium">{formatCurrency(guest.subtotal)}</span>
+                    <span className="font-medium">
+                      {format.number(guest.subtotal, { style: 'currency', currency: 'BRL' })}
+                    </span>
                   </div>
 
                   {guest.items.map((item) => (
                     <div key={item.name} className="flex justify-between text-xs pl-3">
                       <span className="text-muted-foreground truncate">{item.name}</span>
                       <span className="text-muted-foreground shrink-0 ml-2">
-                        {formatCurrency(item.cost)}
+                        {format.number(item.cost, { style: 'currency', currency: 'BRL' })}
                       </span>
                     </div>
                   ))}

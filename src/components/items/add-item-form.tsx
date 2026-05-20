@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { addItem } from '@/actions/items'
@@ -19,6 +20,7 @@ type AddItemForm = {
 }
 
 export function AddItemForm({ eventId, eventSlug }: AddItemForm) {
+  const t = useTranslations('Events')
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<z.input<typeof addItemSchema>, unknown, z.output<typeof addItemSchema>>({
@@ -47,9 +49,9 @@ export function AddItemForm({ eventId, eventSlug }: AddItemForm) {
         name="name"
         label=""
         hideLabel
-        placeholder="Ex: Picanha 2kg..."
+        placeholder={t('items.namePlaceholder')}
         className="flex-1"
-        inputProps={{ 'aria-label': 'Nome do item' }}
+        inputProps={{ 'aria-label': t('items.boardTitle') }}
       />
 
       <ControlledCurrencyInput
@@ -67,7 +69,7 @@ export function AddItemForm({ eventId, eventSlug }: AddItemForm) {
         className="shrink-0"
       >
         <Plus className="h-4 w-4 mr-1" />
-        Adicionar
+        {t('items.addItem')}
       </Button>
 
       <FormErrorAlert message={serverError} />
