@@ -1,3 +1,5 @@
+import { getTranslations } from 'next-intl/server'
+
 import { rsvpConfig, type RsvpStatus } from '@/lib/utils/rsvp'
 
 type PublicGuest = {
@@ -11,13 +13,16 @@ type PublicGuestListProps = {
   currentGuestId?: string
 }
 
-export function PublicGuestList({ guests, currentGuestId }: PublicGuestListProps) {
+export async function PublicGuestList({ guests, currentGuestId }: PublicGuestListProps) {
+  const t = await getTranslations('Public')
   const confirmed = guests.filter((g) => g.rsvp_status === 'confirmed')
   const others = guests.filter((g) => g.rsvp_status !== 'confirmed')
   const sorted = [...confirmed, ...others]
 
   if (sorted.length === 0) {
-    return <p className="text-sm text-muted-foreground text-center py-4">Nenhum convidado ainda.</p>
+    return (
+      <p className="text-sm text-muted-foreground text-center py-4">{t('guestList.noGuests')}</p>
+    )
   }
 
   return (
@@ -41,7 +46,9 @@ export function PublicGuestList({ guests, currentGuestId }: PublicGuestListProps
             </div>
             <span className="flex-1 text-sm text-foreground">
               {guest.name}
-              {isCurrentGuest && <span className="text-xs text-muted-foreground ml-1">(você)</span>}
+              {isCurrentGuest && (
+                <span className="text-xs text-muted-foreground ml-1">{t('guestList.you')}</span>
+              )}
             </span>
             <Icon className={`h-4 w-4 shrink-0 ${config.className}`} />
           </div>

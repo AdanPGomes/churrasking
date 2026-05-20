@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -29,6 +30,7 @@ export async function EventCard({
   totalGuests,
   confirmedGuests,
 }: EventCardProps) {
+  const t = await getTranslations('Events')
   const isPast = date < new Date()
 
   const formattedDate = new Intl.DateTimeFormat('pt-BR', {
@@ -48,11 +50,15 @@ export async function EventCard({
       <CardContent className="flex flex-col gap-1 my-4">
         <p className="text-base font-semibold">{title}</p>
         <p className="text-sm text-muted-foreground">
-          {location ?? 'Sem local definido'} · {totalGuests} convidados
+          {location ?? t('card.noLocation')} · {location ?? t('card.noLocation')} ·{' '}
+          {t('card.guests', { count: totalGuests })}
         </p>
         <div className="flex flex-col gap-1 mt-1">
           <p className="text-xs text-muted-foreground">
-            {confirmedGuests} de {totalGuests} confirmados
+            {t('card.confirmed', {
+              confirmed: confirmedGuests,
+              total: totalGuests,
+            })}
           </p>
           <Progress className="h-1" value={progressValue} />
         </div>
@@ -62,7 +68,7 @@ export async function EventCard({
 
       <CardFooter className="flex justify-between p-2">
         <Button asChild variant="ghost" size="sm">
-          <Link href={`/events/${slug}`}>Ver detalhes</Link>
+          <Link href={`/events/${slug}`}>{t('actions.viewDetails')}</Link>
         </Button>
 
         <CopyLinkButton slug={slug} />

@@ -1,12 +1,20 @@
+import { getTranslations } from 'next-intl/server'
+
 import { Guest } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { rsvpConfig } from '@/lib/utils/rsvp'
 
-type GuestListProps = {
-  guests: Guest[]
+type GuestRowProps = {
+  guest: Guest
+  t: Awaited<ReturnType<typeof getTranslations>>
 }
 
-function GuestRow({ guest }: { guest: Guest }) {
+type GuestListProps = {
+  guests: Guest[]
+  t: Awaited<ReturnType<typeof getTranslations>>
+}
+
+function GuestRow({ guest, t }: GuestRowProps) {
   const config = rsvpConfig[guest.rsvp_status]
   const Icon = config.icon
 
@@ -30,21 +38,23 @@ function GuestRow({ guest }: { guest: Guest }) {
 
       <Badge className={config.className}>
         <Icon className="h-3 w-3 mr-1" />
-        {config.label}
+        {t(`guests.${guest.rsvp_status}`)}
       </Badge>
     </div>
   )
 }
 
-export function GuestList({ guests }: GuestListProps) {
+export async function GuestList({ guests }: GuestListProps) {
+  const t = await getTranslations('Events')
+
   if (guests.length === 0) {
-    return <p className="text-sm text-muted-foreground text-center py-6">Nenhum convidado ainda.</p>
+    return <p className="text-sm text-muted-foreground text-center py-6">{t('guests.noGuests')}</p>
   }
 
   return (
     <div>
       {guests.map((guest) => (
-        <GuestRow key={guest.id} guest={guest} />
+        <GuestRow key={guest.id} guest={guest} t={t} />
       ))}
     </div>
   )

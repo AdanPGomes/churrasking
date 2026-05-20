@@ -15,12 +15,14 @@
     "registering": "Criando conta...",
     "tagline": "Crie eventos · Convide amigos · Divida os custos",
     "welcome": "Bem-vindo, <gold>rei do churrasco!</gold>",
-    "welcomeDescription": "Organize o evento perfeito e convide a galera."
+    "welcomeDescription": "Organize o evento perfeito e convide a galera.",
+    "mascotAlt": "ChurrasKing mascote"
   },
   "Dashboard": {
     "greetingMorning": "Bom dia",
     "greetingAfternoon": "Boa tarde",
     "greetingEvening": "Boa noite",
+    "mascotAlt": "ChurrasKing mascote",
     "upcomingEvents_one": "Você tem {count} evento próximo esta semana.",
     "upcomingEvents_other": "Você tem {count} eventos próximos esta semana.",
     "noEvents": "Nenhum evento criado ainda.",
@@ -77,6 +79,7 @@
       "copied": "Copiado",
       "edit": "Editar",
       "delete": "Excluir",
+      "eventActionsLabel": "Ações do evento",
       "confirmDelete": "Excluir evento?",
       "confirmDeleteDescription": "Esta ação não pode ser desfeita. O evento e todos os dados associados — convidados e itens — serão removidos permanentemente.",
       "deleting": "Excluindo...",
@@ -104,15 +107,17 @@
       "total": "Total estimado",
       "covered": "Itens cobertos",
       "uncovered": "Sem responsável",
+      "confirmed": "Confirmados",
       "confirmedGuests_one": "{count} pessoa",
-      "confiemedGuests_other": "{count} pessoas",
+      "confirmedGuests_other": "{count} pessoas",
       "perPerson": "Custo por pessoa",
       "uncoveredItems": "Itens sem responsável",
       "byGuest": "Por convidado"
     },
     "card": {
       "noLocation": "Sem local definido",
-      "confirmed": "{confirmed} de {total} confirmados"
+      "confirmed": "{confirmed} de {total} confirmados",
+      "guests": "{count} convidados"
     }
   },
   "Public": {
@@ -120,6 +125,8 @@
     "identification": {
       "title": "Você está aqui?",
       "description": "Informe seus dados para confirmar presença.",
+      "nameLabel": "Seu nome",
+      "emailLabel": "Seu e-mail",
       "namePlaceholder": "João Silva",
       "submit": "Entrar no churrasco",
       "submitting": "Entrando..."
@@ -132,13 +139,16 @@
     "guestList": {
       "title": "Quem vem",
       "noGuests": "Nenhum convidado ainda.",
-      "you": "(você)"
+      "you": "(você)",
+      "totalGuests": "convidados",
+      "confirmed": "confirmados"
     },
     "items": {
       "title": "O que levar",
       "noItems": "Nenhum item cadastrado ainda.",
       "claim": "Pego eu",
-      "unclaim": "Vou levar"
+      "unclaim": "Vou levar",
+      "perPerson": "por pessoa"
     }
   },
   "Common": {

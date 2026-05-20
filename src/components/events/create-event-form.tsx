@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 
@@ -29,6 +30,8 @@ function getDefaultTime(): string {
 }
 
 export function CreateEventForm() {
+  const t = useTranslations('Events')
+  const tCommon = useTranslations('Common')
   const router = useRouter()
 
   const [coverFile, setCoverFile] = useState<File | null>(null)
@@ -81,23 +84,23 @@ export function CreateEventForm() {
           <ControlledFieldInput
             control={form.control}
             name="title"
-            label="Título do evento"
-            placeholder="Ex: Churrasco do Aniversário"
+            label={t('fields.title')}
+            placeholder={t('fields.titlePlaceholder')}
             required
           />
 
           <ControlledFieldTextArea
             control={form.control}
             name="description"
-            label="Descrição"
-            placeholder="Conta um pouco sobre o evento..."
+            label={t('fields.description')}
+            placeholder={t('fields.descriptionPlaceholder')}
           />
 
           <FieldGroup className="grid grid-cols-2">
             <ControlledFieldInput
               control={form.control}
               name="date"
-              label="Data"
+              label={t('fields.date')}
               type="date"
               inputProps={{ min: new Date().toISOString().split('T')[0] }}
               required
@@ -106,7 +109,7 @@ export function CreateEventForm() {
             <ControlledFieldInput
               control={form.control}
               name="time"
-              label="Horário"
+              label={t('fields.time')}
               type="time"
               required
             />
@@ -115,19 +118,19 @@ export function CreateEventForm() {
           <ControlledFieldInput
             control={form.control}
             name="location"
-            label="Local"
-            placeholder="Ex: Quintal do Adan"
+            label={t('fields.location')}
+            placeholder={t('fields.locationPlaceholder')}
           />
         </FieldSet>
 
         <div className="flex flex-col gap-4">
-          <FileUploadField id="cover" label="Cover image" onChange={setCoverFile} />
+          <FileUploadField id="cover" label={t('fields.cover')} onChange={setCoverFile} />
 
           <Separator />
 
           <FieldSet className="flex flex-col">
-            <FieldLegend>Itens necessários</FieldLegend>
-            <FieldDescription>Os convidados podem se voluntariar para trazer.</FieldDescription>
+            <FieldLegend>{t('items.sectionTitle')}</FieldLegend>
+            <FieldDescription>{t('items.sectionDescription')}</FieldDescription>
 
             {fields.map((field, index) => (
               <ItemFieldRow
@@ -144,7 +147,7 @@ export function CreateEventForm() {
               onClick={() => append({ name: '', estimated_cost: undefined })}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Adicionar item
+              {t('items.addItem')}
             </Button>
           </FieldSet>
 
@@ -159,7 +162,7 @@ export function CreateEventForm() {
               aria-busy={form.formState.isSubmitting}
               className="w-full"
             >
-              {form.formState.isSubmitting ? 'Criando...' : 'Criar churrasco'}
+              {form.formState.isSubmitting ? t('actions.creating') : t('actions.create')}
             </Button>
 
             <Button
@@ -168,7 +171,7 @@ export function CreateEventForm() {
               onClick={() => router.back()}
               className="w-full"
             >
-              Cancelar
+              {tCommon('cancel')}
             </Button>
           </div>
         </div>

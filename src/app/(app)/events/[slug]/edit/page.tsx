@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { createClient } from '@/lib/supabase/server'
 import { getEventBySlug } from '@/lib/queries/events'
@@ -13,18 +14,20 @@ type Props = {
 export default async function EditEventPage({ params }: Props) {
   const { slug } = await params
   const supabase = await createClient()
-  const event = await getEventBySlug(supabase, slug)
 
+  const event = await getEventBySlug(supabase, slug)
   if (!event) notFound()
+
+  const t = await getTranslations('Events')
 
   return (
     <PageContainer>
       <PageHeader
-        title="Editar evento"
+        title={t('editTitle')}
         breadcrumbs={[
-          { label: 'Dashboard', href: 'dashboard' },
+          { label: t('breadcrumbDashboard'), href: '/dashboard' },
           { label: event.title, href: `/events/${slug}` },
-          { label: 'Editar' },
+          { label: t('actions.edit') },
         ]}
       />
 

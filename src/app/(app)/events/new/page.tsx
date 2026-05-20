@@ -1,14 +1,21 @@
+import { getTranslations } from 'next-intl/server'
+
 import { PageHeader } from '@/components/layout/page-header'
 import { PageContainer } from '@/components/layout/page-container'
 import { CreateEventForm } from '@/components/events/create-event-form'
 
 export default async function NewEventPage() {
+  const t = await getTranslations('Events')
+
   return (
     <PageContainer>
       <PageHeader
-        title="Criar evento"
-        description="Preencha os detalhes e compartilhe o link com seus convidados."
-        breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: 'Novo churrasco' }]}
+        title={t('createTitle')}
+        description={t('createDescription')}
+        breadcrumbs={[
+          { label: t('breadcrumbDashboard'), href: '/dashboard' },
+          { label: t('breadcrumbNew') },
+        ]}
       />
 
       <CreateEventForm />

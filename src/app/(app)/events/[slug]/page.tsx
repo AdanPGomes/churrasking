@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 
 import { Guest } from '@/types'
 import { Progress } from '@/components/ui/progress'
@@ -26,8 +27,9 @@ export default async function EventDetailPage({ params }: Props) {
   const supabase = await createClient()
 
   const event = await getEventBySlug(supabase, slug)
-
   if (!event) notFound()
+
+  const t = await getTranslations('Events')
 
   const items = await getEventItems(supabase, event.id)
 
@@ -60,7 +62,10 @@ export default async function EventDetailPage({ params }: Props) {
               <PageHeader
                 variant="dark"
                 title={event.title}
-                breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }, { label: event.title }]}
+                breadcrumbs={[
+                  { label: t('breadcrumbDashboard'), href: '/dashboard' },
+                  { label: event.title },
+                ]}
                 className="mb-0"
               />
 
@@ -72,22 +77,22 @@ export default async function EventDetailPage({ params }: Props) {
               <div className="grid grid-cols-3 gap-3 lg:hidden">
                 <StatCard
                   variant="dark"
-                  label="convidados"
+                  label={t('stats.guests')}
                   value={totalGuests}
-                  sub={`${pendingGuests} pendentes`}
+                  sub={t('stats.pending', { count: pendingGuests })}
                 />
                 <StatCard
                   variant="dark"
-                  label="confirmados"
+                  label={t('stats.confirmed')}
                   value={confirmedGuests}
-                  sub={`${declinedGuests} recusaram`}
+                  sub={t('stats.declined', { count: declinedGuests })}
                   valueClassName="text-green-400"
                 />
                 <StatCard
                   variant="dark"
-                  label="por pessoa"
+                  label={t('stats.perPerson')}
                   value={formatCurrency(summary.costPerPerson)}
-                  sub="estimado"
+                  sub={t('stats.estimated')}
                   valueClassName="text-primary"
                 />
               </div>
@@ -96,22 +101,22 @@ export default async function EventDetailPage({ params }: Props) {
             <div className="hidden lg:flex gap-3 shrink-0">
               <StatCard
                 variant="dark"
-                label="convidados"
+                label={t('stats.guests')}
                 value={totalGuests}
-                sub={`${pendingGuests} pendentes`}
+                sub={t('stats.pending', { count: pendingGuests })}
               />
               <StatCard
                 variant="dark"
-                label="confirmados"
+                label={t('stats.confirmed')}
                 value={confirmedGuests}
-                sub={`${declinedGuests} recusaram`}
+                sub={t('stats.declined', { count: declinedGuests })}
                 valueClassName="text-green-400"
               />
               <StatCard
                 variant="dark"
-                label="por pessoa"
-                value="R$0"
-                sub="estimado"
+                label={t('stats.perPerson')}
+                value={formatCurrency(summary.costPerPerson)}
+                sub={t('stats.estimated')}
                 valueClassName="text-primary"
               />
             </div>
@@ -119,7 +124,7 @@ export default async function EventDetailPage({ params }: Props) {
 
           <div className="flex flex-col gap-1">
             <div className="flex justify-between text-xs text-white/50">
-              <span>Taxa de confirmação</span>
+              <span>{t('stats.confirmationRate')}</span>
               <span>{Math.round(progressValue)}%</span>
             </div>
             <Progress value={progressValue} className="h-1.5" />
@@ -133,11 +138,11 @@ export default async function EventDetailPage({ params }: Props) {
         <Card>
           <CardHeader>
             <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-              Convidados
+              {t('guests.sectionTitle')}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <GuestList guests={(event.guests ?? []) as Guest[]} />
+            <GuestList guests={(event.guests ?? []) as Guest[]} t={t} />
           </CardContent>
         </Card>
 

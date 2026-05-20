@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { Check } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/button'
 import { claimItem, unclaimItem } from '@/actions/items'
@@ -27,15 +28,14 @@ function getGuestName(guests: Item['guests']): string | null {
   return guest?.name ?? null
 }
 
-function GuestItemRow({
-  item,
-  eventSlug,
-  currentGuestId,
-}: {
+type GuestItemRowProps = {
   item: Item
   eventSlug: string
   currentGuestId?: string
-}) {
+  t: ReturnType<typeof useTranslations>
+}
+
+function GuestItemRow({ item, eventSlug, currentGuestId, t }: GuestItemRowProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -84,7 +84,7 @@ function GuestItemRow({
             className="shrink-0 border-primary text-primary hover:bg-primary/10"
           >
             <Check className="h-3.5 w-3.5 mr-1" />
-            Vou levar
+            {t('items.unclaim')}
           </Button>
         ) : isClaimed ? (
           <span className="text-xs bg-muted text-muted-foreground px-2 py-1 rounded-full shrink-0">
@@ -98,7 +98,7 @@ function GuestItemRow({
             disabled={isLoading}
             className="shrink-0"
           >
-            Pego eu
+            {t('items.claim')}
           </Button>
         ) : null}
       </div>
@@ -109,19 +109,19 @@ function GuestItemRow({
 }
 
 export function GuestItemsBoard({ items, eventSlug, currentGuestId }: GuestItemsBoardProps) {
+  const t = useTranslations('Public')
+
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
-          O que levar
+          {t('items.title')}
         </CardTitle>
       </CardHeader>
 
       <CardContent>
         {items.length === 0 ? (
-          <p className="text-sm text-muted-foreground text-center py-4">
-            Nenhum item cadastrado ainda.
-          </p>
+          <p className="text-sm text-muted-foreground text-center py-4">{t('items.noItems')}</p>
         ) : (
           items.map((item) => (
             <GuestItemRow
@@ -129,6 +129,7 @@ export function GuestItemsBoard({ items, eventSlug, currentGuestId }: GuestItems
               item={item}
               eventSlug={eventSlug}
               currentGuestId={currentGuestId}
+              t={t}
             />
           ))
         )}

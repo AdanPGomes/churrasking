@@ -15,12 +15,14 @@
     "registering": "Creating account...",
     "tagline": "Create events · Invite friends · Split costs",
     "welcome": "Welcome, <gold>BBQ king!</gold>",
-    "welcomeDescription": "Organize the perfect event and invite your crew."
+    "welcomeDescription": "Organize the perfect event and invite your crew.",
+    "mascotAlt": "BBQ King mascot"
   },
   "Dashboard": {
     "greeting_morning": "Good morning",
     "greeting_afternoon": "Good afternoon",
     "greeting_evening": "Good evening",
+    "mascotAlt": "BBQ King mascot",
     "upcomingEvents_one": "You have {count} upcoming event this week.",
     "upcomingEvents_other": "You have {count} upcoming events this week.",
     "noEvents": "No events created yet.",
@@ -77,6 +79,7 @@
       "copied": "Copied",
       "edit": "Edit",
       "delete": "Delete",
+      "eventActionsLabel": "Event actions",
       "confirmDelete": "Delete event?",
       "confirmDeleteDescription": "This action cannot be undone. The event and all associated data — guests and items — will be permanently removed.",
       "deleting": "Deleting...",
@@ -104,6 +107,7 @@
       "total": "Total estimated",
       "covered": "Covered items",
       "uncovered": "Without owner",
+      "confirmed": "Confirmed",
       "confirmedGuests_one": "{count} person",
       "confirmedGuests_other": "{count} people",
       "perPerson": "Cost per person",
@@ -112,7 +116,8 @@
     },
     "card": {
       "noLocation": "No location defined",
-      "confirmed": "{confirmed} of {total} confirmed"
+      "confirmed": "{confirmed} of {total} confirmed",
+      "guests": "{count} guests"
     }
   },
   "Public": {
@@ -120,6 +125,8 @@
     "identification": {
       "title": "Are you here?",
       "description": "Enter your details to confirm your attendance.",
+      "nameLabel": "Your name",
+      "emailLabel": "Your e-mail",
       "namePlaceholder": "John Smith",
       "submit": "Join the BBQ",
       "submitting": "Joining..."
@@ -132,13 +139,16 @@
     "guestList": {
       "title": "Who's coming",
       "noGuests": "No guests yet.",
-      "you": "(you)"
+      "you": "(you)",
+      "totalGuests": "guests",
+      "confirmed": "confirmed"
     },
     "items": {
       "title": "What to bring",
       "noItems": "No items added yet.",
       "claim": "I'll bring it",
-      "unclaim": "Bringing it"
+      "unclaim": "Bringing it",
+      "perPerson": "per person"
     }
   },
   "Common": {

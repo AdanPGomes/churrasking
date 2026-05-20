@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslations } from 'next-intl'
 import { zodResolver } from '@hookform/resolvers/zod'
 
 import { upsertGuest } from '@/actions/guests'
@@ -17,6 +18,7 @@ type GuestIdentificationFormProps = {
 }
 
 export function GuestIdentificationForm({ eventId, eventSlug }: GuestIdentificationFormProps) {
+  const t = useTranslations('Public')
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<GuestInput>({
@@ -33,8 +35,8 @@ export function GuestIdentificationForm({ eventId, eventSlug }: GuestIdentificat
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base font-medium">Você está aqui?</CardTitle>
-        <p className="text-sm text-muted-foreground">Informe seus dados para confirmar presença.</p>
+        <CardTitle className="text-base font-medium">{t('identification.title')}</CardTitle>
+        <p className="text-sm text-muted-foreground">{t('identification.description')}</p>
       </CardHeader>
 
       <CardContent>
@@ -42,8 +44,8 @@ export function GuestIdentificationForm({ eventId, eventSlug }: GuestIdentificat
           <ControlledFieldInput
             control={form.control}
             name="name"
-            label="Seu nome"
-            placeholder="João Silva"
+            label={t('identification.nameLabel')}
+            placeholder={t('identification.namePlaceholder')}
             autoComplete="name"
             required
           />
@@ -51,7 +53,7 @@ export function GuestIdentificationForm({ eventId, eventSlug }: GuestIdentificat
           <ControlledFieldInput
             control={form.control}
             name="email"
-            label="Seu e-mail"
+            label={t('identification.emailLabel')}
             placeholder="joao@email.com"
             autoComplete="email"
             required
@@ -65,7 +67,9 @@ export function GuestIdentificationForm({ eventId, eventSlug }: GuestIdentificat
             aria-disabled={form.formState.isSubmitting}
             className="w-full"
           >
-            {form.formState.isSubmitting ? 'Entrando...' : 'Entrar no churrasco'}
+            {form.formState.isSubmitting
+              ? t('identification.submitting')
+              : t('identification.submit')}
           </Button>
         </form>
       </CardContent>

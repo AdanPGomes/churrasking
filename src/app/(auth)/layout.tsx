@@ -1,10 +1,13 @@
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const t = await getTranslations('Auth')
+
   return (
     <main className="flex flex-col lg:flex-row min-h-screen">
       <div
@@ -29,7 +32,7 @@ export default function AuthLayout({
           <div className="relative w-32 h-32 lg:w-72 lg:h-72">
             <Image
               src="/mascot.png"
-              alt="ChurrasKing mascote"
+              alt={t('mascotAlt')}
               fill
               sizes="(max-width: 1024px) 128px, 288px"
               priority
@@ -39,15 +42,17 @@ export default function AuthLayout({
 
           <div className="bg-white/5 border border-white/10 rounded-2xl px-4 py-3 lg:px-6 lg:py-4 max-w-xs text-center">
             <p className="text-white/85 text-sm leading-relaxed">
-              Bem-vindo, <span className="text-primary font-semibold">rei do churrasco!</span>
+              {t.rich('welcome', {
+                gold: (chunks) => <span className="text-primary font-semibold">{chunks}</span>,
+              })}
               <br />
-              Organize o evento perfeito e convide a galera.
+              {t('welcomeDescription')}
             </p>
           </div>
         </div>
 
         <p className="hidden lg:block text-white/35 text-xs text-center relative z-10">
-          Crie eventos · Convide amigos · Divida os custos
+          {t('tagline')}
         </p>
       </div>
 

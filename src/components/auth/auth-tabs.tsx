@@ -2,10 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 import { cn } from '@/lib/utils'
 
 export function AuthTabs() {
+  const t = useTranslations('Auth')
   const pathname = usePathname()
   const isLogin = pathname === '/login'
 
@@ -19,7 +21,7 @@ export function AuthTabs() {
           'text-muted-foreground hover:text-foreground': !isLogin,
         })}
       >
-        Entrar
+        {t('login')}
       </Link>
 
       <Link
@@ -30,7 +32,7 @@ export function AuthTabs() {
           'text-muted-foreground hover:text-foreground': isLogin,
         })}
       >
-        Criar conta
+        {t('register')}
       </Link>
     </div>
   )
