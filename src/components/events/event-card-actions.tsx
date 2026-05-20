@@ -66,7 +66,7 @@ export function EventCardActions({ eventId, slug }: EventCardActionsProps) {
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => router.push(`/events/${slug}/edit`)} className="gap-2">
             <Pencil className="h-4 w-4" />
-            {t('edit')}
+            {t('actions.edit')}
           </DropdownMenuItem>
 
           <DropdownMenuSeparator />
@@ -76,7 +76,7 @@ export function EventCardActions({ eventId, slug }: EventCardActionsProps) {
             className="gap-2 text-destructive focus:text-destructive"
           >
             <Trash2 className="h-4 w-4" />
-            {t('delete')}
+            {t('actions.delete')}
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -89,7 +89,7 @@ export function EventCardActions({ eventId, slug }: EventCardActionsProps) {
           </AlertDialogHeader>
           {error && <p className="text-sm text-destructive">{error}</p>}
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>{t('Common.cancel')}</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('actions.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}

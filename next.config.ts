@@ -1,7 +1,14 @@
 import type { NextConfig } from 'next'
+import withSerwistInit from '@serwist/next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
+
+const withSerwist = withSerwistInit({
+  swSrc: 'src/app/sw.ts',
+  swDest: 'public/sw.js',
+  disable: process.env.NODE_ENV === 'development',
+})
 
 const ContentSecurityPolicy = [
   "default-src 'self'",
@@ -9,6 +16,7 @@ const ContentSecurityPolicy = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: *.supabase.co",
   "connect-src 'self' *.supabase.co wss://*.supabase.co",
+  "worker-src 'self'",
 ].join('; ')
 
 const nextConfig: NextConfig = {
@@ -39,4 +47,4 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withNextIntl(nextConfig) as NextConfig
+export default withNextIntl(withSerwist(nextConfig)) as NextConfig
