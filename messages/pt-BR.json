@@ -112,8 +112,7 @@
       "covered": "Itens cobertos",
       "uncovered": "Sem responsável",
       "confirmed": "Confirmados",
-      "confirmedGuests_one": "{count} pessoa",
-      "confirmedGuests_other": "{count} pessoas",
+      "confirmedGuests": "{count, plural, one {# pessoa} other {# pessoas}}",
       "perPerson": "Custo por pessoa",
       "uncoveredItems": "Itens sem responsável",
       "byGuest": "Por convidado"

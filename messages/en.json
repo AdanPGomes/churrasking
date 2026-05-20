@@ -112,8 +112,7 @@
       "covered": "Covered items",
       "uncovered": "Without owner",
       "confirmed": "Confirmed",
-      "confirmedGuests_one": "{count} person",
-      "confirmedGuests_other": "{count} people",
+      "confirmedGuests": "{count, plural, one {# person} other {# people}}",
       "perPerson": "Cost per person",
       "uncoveredItems": "Items without owner",
       "byGuest": "By guest"

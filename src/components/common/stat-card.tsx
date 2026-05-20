@@ -16,7 +16,7 @@ const statValueVariants = cva('font-semibold', {
   variants: {
     variant: {
       light: 'text-foreground text-2xl',
-      dark: 'text-white text-3xl',
+      dark: 'text-white text-2xl',
     },
   },
   defaultVariants: { variant: 'light' },
@@ -53,8 +53,10 @@ type StatCardProps = {
 export function StatCard({ label, value, sub, variant, valueClassName, className }: StatCardProps) {
   return (
     <div className={cn(statCardVariants({ variant }), className)}>
-      <p className={cn(statLabelVariants({ variant }))}>{label}</p>
-      <p className={cn(statValueVariants({ variant }), valueClassName)}>{value}</p>
+      <p className={cn('whitespace-nowrap', statLabelVariants({ variant }))}>{label}</p>
+      <p className={cn('flex justify-center', statValueVariants({ variant }), valueClassName)}>
+        {value}
+      </p>
       <p className={cn(statSubVariants({ variant }))}>{sub}</p>
     </div>
   )
