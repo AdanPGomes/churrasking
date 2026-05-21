@@ -42,7 +42,7 @@ export async function getHostStats(supabase: SupabaseClient<Database>) {
   return data
 }
 
-async function getchEventWithGuests(
+async function fetchEventWithGuests(
   supabase: SupabaseClient<Database>,
   slug: string,
   hostId: string
@@ -72,7 +72,7 @@ async function getchEventWithGuests(
     .single()
 }
 
-async function getchEventSummary(supabase: SupabaseClient<Database>, slug: string, hostId: string) {
+async function fetchEventSummary(supabase: SupabaseClient<Database>, slug: string, hostId: string) {
   return supabase
     .from('event_summary')
     .select('total_guests, confirmed_guests, declined_guests, pending_guests')
@@ -88,8 +88,8 @@ export async function getEventBySlug(supabase: SupabaseClient<Database>, slug: s
   if (!user) return null
 
   const [eventResult, summaryResult] = await Promise.all([
-    getchEventWithGuests(supabase, slug, user.id),
-    getchEventSummary(supabase, slug, user.id),
+    fetchEventWithGuests(supabase, slug, user.id),
+    fetchEventSummary(supabase, slug, user.id),
   ])
 
   if (eventResult.error || summaryResult.error) {

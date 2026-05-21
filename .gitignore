@@ -50,3 +50,9 @@ next-env.d.ts
 supabase/.temp
 supabase/.branches
 supabase/logs
+
+# Playwright
+e2e/.auth/
+!e2e/.auth/.gitkeep
+playwright-report/
+test-results/
