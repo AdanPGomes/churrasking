@@ -23,9 +23,9 @@
     "mascotAlt": "BBQ King mascot"
   },
   "Dashboard": {
-    "greeting_morning": "Good morning",
-    "greeting_afternoon": "Good afternoon",
-    "greeting_evening": "Good evening",
+    "greetingMorning": "Good morning",
+    "greetingAfternoon": "Good afternoon",
+    "greetingEvening": "Good evening",
     "mascotAlt": "BBQ King mascot",
     "upcomingEvents_one": "You have {count} upcoming event this week.",
     "upcomingEvents_other": "You have {count} upcoming events this week.",
@@ -154,10 +154,28 @@
       "perPerson": "per person"
     }
   },
+  "Profile": {
+    "title": "Profile",
+    "preferences": "Preferences",
+    "language": "Language",
+    "languageDescription": "Choose your interface language",
+    "account": "Account",
+    "name": "Name",
+    "email": "Email",
+    "theme": "Theme",
+    "themeDescription": "Interface appearance",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System"
+  },
   "Common": {
     "darkMode": "Dark mode",
     "lightMode": "Light mode",
     "mascotAlt": "BBQ King mascot",
+    "dashboard": "Dashboard",
+    "language": "Language",
+    "profile": "Profile",
+    "logout": "Log out",
     "optional": "(optional)",
     "back": "Back",
     "cancel": "Cancel",

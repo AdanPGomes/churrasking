@@ -158,10 +158,28 @@
     "error": "Sem conexão, rei",
     "message": "Parece que você está sem internet. Reconecte-se para acessar seus churrascos."
   },
+  "Profile": {
+    "title": "Perfil",
+    "preferences": "Preferências",
+    "language": "Idioma",
+    "languageDescription": "Escolha o idioma da interface",
+    "account": "Conta",
+    "name": "Nome",
+    "email": "E-mail",
+    "theme": "Tema",
+    "themeDescription": "Aparência da interface",
+    "themeLight": "Claro",
+    "themeDark": "Escuro",
+    "themeSystem": "Sistema"
+  },
   "Common": {
     "darkMode": "Tema escuro",
     "lightMode": "Tema claro",
     "mascotAlt": "ChurrasKing mascote",
+    "dashboard": "Dashboard",
+    "language": "Idioma",
+    "profile": "Perfil",
+    "logout": "Sair",
     "optional": "(opcional)",
     "back": "Voltar",
     "delete": "Excluir",

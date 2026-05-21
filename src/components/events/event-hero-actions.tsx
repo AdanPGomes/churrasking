@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Copy, Check, Pencil, Trash2 } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -23,6 +24,7 @@ type EventHeroActionsProps = {
 }
 
 export function EventHeroActions({ eventId, slug }: EventHeroActionsProps) {
+  const t = useTranslations('Events')
   const router = useRouter()
   const [copied, setCopied] = useState(false)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -60,12 +62,12 @@ export function EventHeroActions({ eventId, slug }: EventHeroActionsProps) {
           {copied ? (
             <>
               <Check className="h-3.5 w-3.5" />
-              Copiado
+              {t('actions.copied')}
             </>
           ) : (
             <>
               <Copy className="h-3.5 w-3.5" />
-              Copiar link
+              {t('actions.copyLink')}
             </>
           )}
         </Button>
@@ -78,7 +80,7 @@ export function EventHeroActions({ eventId, slug }: EventHeroActionsProps) {
           className="gap-1.5 bg-white/10 text-white border-white/20 hover:bg-white/20"
         >
           <Pencil className="h-3.5 w-3.5" />
-          Editar
+          {t('actions.edit')}
         </Button>
 
         <Button
@@ -89,7 +91,7 @@ export function EventHeroActions({ eventId, slug }: EventHeroActionsProps) {
           className="gap-1.5 bg-destructive/20 text-red-400 border-destructive/30 hover:bg-destructive/30 shrink-0"
         >
           <Trash2 className="h-3.5 w-3.5" />
-          <span className="hidden sm:inline">Excluir</span>
+          <span className="hidden sm:inline">{t('actions.delete')}</span>
         </Button>
       </div>
 
