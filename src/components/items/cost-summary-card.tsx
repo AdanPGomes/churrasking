@@ -78,10 +78,8 @@ export async function CostSummaryCard({ items, confirmedGuests }: CostSummaryCar
           </div>
         </div>
 
-        <div className="bg-primary/10 rounded-xl px-4 py-3 flex justify-between items-center">
-          <span className="text-sm font-medium text-primary-foreground/80">
-            {t('costs.perPerson')}
-          </span>
+        <div className="bg-primary/15 rounded-xl px-4 py-3 flex justify-between items-center">
+          <span className="text-sm font-medium text-foreground">{t('costs.perPerson')}</span>
 
           <span className="text-xl font-semibold text-primary">
             {format.number(summary.costPerPerson, { style: 'currency', currency: 'BRL' })}

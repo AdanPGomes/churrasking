@@ -1,9 +1,10 @@
 import type { Viewport } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 import { Geist, Geist_Mono, Figtree } from 'next/font/google'
+import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
+import { ThemeProvider } from '@/components/common/theme-provider'
 
 import './globals.css'
 
@@ -52,6 +53,7 @@ export default async function RootLayout({
   return (
     <html
       lang={locale}
+      suppressHydrationWarning
       className={cn(
         'h-full',
         'antialiased',
@@ -62,7 +64,9 @@ export default async function RootLayout({
       )}
     >
       <body className="min-h-screen flex flex-col bg-background">
-        <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        <ThemeProvider>
+          <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

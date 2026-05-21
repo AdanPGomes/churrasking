@@ -1,18 +1,22 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 
 import { logout } from '@/actions/auth'
 import { Button } from '@/components/ui/button'
 import { getProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
+import { ThemeToggle } from '@/components/common/theme-toggle'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { User } from 'lucide-react'
 
 function getInitials(name: string): string {
   return name
@@ -24,6 +28,7 @@ function getInitials(name: string): string {
 }
 
 export default async function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const t = await getTranslations('Common')
   const supabase = await createClient()
   const profile = await getProfile(supabase)
 
@@ -64,12 +69,23 @@ export default async function AppLayout({ children }: Readonly<{ children: React
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
+                  <Link href="/profile" className="gap-2">
+                    <User className="h-4 w-4" />
+                    {t('profile')}
+                  </Link>
+                </DropdownMenuItem>
+                <ThemeToggle />
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuItem asChild>
                   <form action={logout} className="w-full">
                     <button type="submit" className="w-full text-left text-destructive">
-                      Log out
+                      {t('logout')}
                     </button>
                   </form>
                 </DropdownMenuItem>
