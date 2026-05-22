@@ -9,6 +9,7 @@ import { Separator } from '@/components/ui/separator'
 import { CopyLinkButton } from '@/components/events/copy-link-button'
 import { EventCardActions } from '@/components/events/event-card-actions'
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import { getProgressValue, isPastEvent } from '@/lib/utils/event'
 
 type EventCardProps = {
   id: string
@@ -33,27 +34,22 @@ export async function EventCard({
   const t = await getTranslations('Events')
   const format = await getFormatter()
 
-  const isPast = date < new Date()
-
   const formattedDate = format.dateTime(date, {
     day: 'numeric',
     month: 'short',
   })
 
-  const progressValue = totalGuests > 0 ? (confirmedGuests / totalGuests) * 100 : 0
-
   return (
-    <Card className={cn('w-full md:w-1/3 p-0 gap-0', isPast && 'opacity-60')}>
+    <Card className={cn('w-full md:w-1/3 p-0 gap-0', isPastEvent(date) && 'opacity-60')}>
       <CardHeader className="p-4 bg-primary-foreground rounded-t-xl flex flex-row items-center justify-between">
-        <Badge variant={isPast ? 'secondary' : 'default'}>{formattedDate}</Badge>
+        <Badge variant={isPastEvent(date) ? 'secondary' : 'default'}>{formattedDate}</Badge>
         <EventCardActions eventId={id} slug={slug} />
       </CardHeader>
 
       <CardContent className="flex flex-col gap-1 my-4">
         <p className="text-base font-semibold">{title}</p>
         <p className="text-sm text-muted-foreground">
-          {location ?? t('card.noLocation')} · {location ?? t('card.noLocation')} ·{' '}
-          {t('card.guests', { count: totalGuests })}
+          {location ?? t('card.noLocation')} · {t('card.guests', { count: totalGuests })}
         </p>
         <div className="flex flex-col gap-1 mt-1">
           <p className="text-xs text-muted-foreground">
@@ -62,7 +58,7 @@ export async function EventCard({
               total: totalGuests,
             })}
           </p>
-          <Progress className="h-1" value={progressValue} />
+          <Progress className="h-1" value={getProgressValue(confirmedGuests, totalGuests)} />
         </div>
       </CardContent>
 

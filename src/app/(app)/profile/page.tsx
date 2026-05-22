@@ -3,20 +3,12 @@ import { getTranslations } from 'next-intl/server'
 
 import { getProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
+import { getInitials } from '@/lib/utils/presentation'
 import { PageHeader } from '@/components/layout/page-header'
 import { ThemeSelect } from '@/components/common/theme-select'
 import { LocaleSelect } from '@/components/common/locale-select'
 import { PageContainer } from '@/components/layout/page-container'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-}
 
 export default async function ProfilePage() {
   const supabase = await createClient()

@@ -3,17 +3,10 @@ import { getFormatter, getTranslations } from 'next-intl/server'
 import { Separator } from '@/components/ui/separator'
 import { calculateCostSummary } from '@/lib/utils/cost'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-type Item = {
-  id: string
-  name: string
-  estimated_cost: number | null
-  assigned_guest_id: string | null
-  guests: { id: string; name: string } | { id: string; name: string }[] | null
-}
+import { ItemWithGuest } from '@/types'
 
 type CostSummaryCardProps = {
-  items: Item[]
+  items: ItemWithGuest[]
   confirmedGuests: number
 }
 
