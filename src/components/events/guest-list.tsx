@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Guest } from '@/types'
 import { Badge } from '@/components/ui/badge'
 import { rsvpConfig } from '@/lib/utils/rsvp'
+import { getInitials } from '@/lib/utils/presentation'
 
 type GuestRowProps = {
   guest: Guest
@@ -18,17 +19,10 @@ function GuestRow({ guest, t }: GuestRowProps) {
   const config = rsvpConfig[guest.rsvp_status]
   const Icon = config.icon
 
-  const initials = guest.name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-
   return (
     <div className="flex items-center gap-3 py-3 border-b border-border last:border-none">
       <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium shrink-0">
-        {initials}
+        {getInitials(guest.name)}
       </div>
 
       <div className="flex-1 min-w-0">

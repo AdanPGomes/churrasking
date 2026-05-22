@@ -1,10 +1,5 @@
-type Item = {
-  id: string
-  name: string
-  estimated_cost: number | null
-  assigned_guest_id: string | null
-  guests: { id: string; name: string } | { id: string; name: string }[] | null
-}
+import { ItemWithGuest } from '@/types'
+import { resolveGuest } from '@/lib/utils/guest'
 
 type GuestBreakdown = {
   guestId: string
@@ -22,13 +17,7 @@ type CostSummary = {
   guestBreakdown: GuestBreakdown[]
 }
 
-function getGuest(guests: Item['guests']): { id: string; name: string } | null {
-  if (!guests) return null
-  const guest = Array.isArray(guests) ? guests[0] : guests
-  return guest ?? null
-}
-
-export function calculateCostSummary(items: Item[], confirmedGuests: number): CostSummary {
+export function calculateCostSummary(items: ItemWithGuest[], confirmedGuests: number): CostSummary {
   const itemsWithCost = items.filter((i) => i.estimated_cost !== null)
 
   const totalEstimated = itemsWithCost.reduce((acc, i) => acc + (i.estimated_cost ?? 0), 0)
@@ -45,7 +34,7 @@ export function calculateCostSummary(items: Item[], confirmedGuests: number): Co
   const guestMap = new Map<string, GuestBreakdown>()
 
   for (const item of coveredItems) {
-    const guest = getGuest(item.guests)
+    const guest = resolveGuest(item.guests)
     if (!guest) continue
 
     if (!guestMap.has(guest.id)) {

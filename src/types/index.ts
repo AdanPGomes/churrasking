@@ -1,9 +1,17 @@
-import { Database } from '@/types/supabase'
+import { Tables } from '@/types/supabase'
 
 export type RsvpStatus = 'confirmed' | 'declined' | 'pending'
 
-export type Guest = Omit<Database['public']['Tables']['guests']['Row'], 'rsvp_status'> & {
+export type Guest = Omit<Tables<'guests'>, 'rsvp_status'> & {
   rsvp_status: RsvpStatus
 }
 
-export type Event = Database['public']['Tables']['events']['Row']
+export type Event = Tables<'events'>
+
+export type Item = Tables<'items'>
+
+type GuestSummary = Pick<Tables<'guests'>, 'id' | 'name'>
+
+export type ItemWithGuest = Pick<Item, 'id' | 'name' | 'estimated_cost' | 'assigned_guest_id'> & {
+  guests: GuestSummary | GuestSummary[] | null
+}

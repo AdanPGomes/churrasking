@@ -7,29 +7,22 @@ import { useFormatter, useTranslations } from 'next-intl'
 import { Button } from '@/components/ui/button'
 import { claimItem, unclaimItem } from '@/actions/items'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-type Item = {
-  id: string
-  name: string
-  estimated_cost: number | null
-  assigned_guest_id: string | null
-  guests: { id: string; name: string } | { id: string; name: string }[] | null
-}
+import { ItemWithGuest } from '@/types'
 
 type GuestItemsBoardProps = {
-  items: Item[]
+  items: ItemWithGuest[]
   eventSlug: string
   currentGuestId?: string
 }
 
-function getGuestName(guests: Item['guests']): string | null {
+function getGuestName(guests: ItemWithGuest['guests']): string | null {
   if (!guests) return null
   const guest = Array.isArray(guests) ? guests[0] : guests
   return guest?.name ?? null
 }
 
 type GuestItemRowProps = {
-  item: Item
+  item: ItemWithGuest
   eventSlug: string
   currentGuestId?: string
   t: ReturnType<typeof useTranslations>

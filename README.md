@@ -34,7 +34,7 @@
 ChurrasKing is a full-stack web application for organizing brazilian barbecue (churrasco) events.
 Hosts create an event and share a single link — guests open it, identify themselves with name and email, confirm attendance, and claim items to bring. No app download required.
 
-> Built as a portifolio project demonstrating modern full-stack development with Next.js App Router,
+> Built as a portfolio project demonstrating modern full-stack development with Next.js App Router,
 > Supabase, TypeScript, and production-grade practices including i18n, PWA, accessibility, and security.
 
 ---
@@ -60,20 +60,19 @@ Hosts create an event and share a single link — guests open it, identify thems
 
 ## Tech Stack
 
-| Layer         | Technology                                       |
-| ------------- | ------------------------------------------------ |
-| Framework     | Next.js 16 (App Router, RSC, Server Actions)     |
-| Language      | TypeScript 5                                     |
-| Database      | Supabase (PostgreSQL + Row Level Security)       |
-| Auth          | Supabase Auth (email/password + Google OAuth)    |
-| Realtime      | Supabase Realtime                                |
-| Styling       | Tailwind CSS v4 + shadcn/ui (Maia)               |
-| Forms         | React Hook Form + Zod v4                         |
-| Data Fetching | TanStack Query v5 (client-side cache + Realtime) |
-| i18n          | next-intl (pt-BR + en)                           |
-| PWA           | next-pwa + Workbox                               |
-| Testing       | Vitest + Testing Library + Playwright            |
-| Deployment    | Vercel                                           |
+| Layer      | Technology                                    |
+| ---------- | --------------------------------------------- |
+| Framework  | Next.js 16 (App Router, RSC, Server Actions)  |
+| Language   | TypeScript 5                                  |
+| Database   | Supabase (PostgreSQL + Row Level Security)    |
+| Auth       | Supabase Auth (email/password + Google OAuth) |
+| Realtime   | Supabase Realtime                             |
+| Styling    | Tailwind CSS v4 + shadcn/ui (Maia)            |
+| Forms      | React Hook Form + Zod v4                      |
+| i18n       | next-intl (pt-BR + en)                        |
+| PWA        | next-pwa + Workbox                            |
+| Testing    | Vitest + Testing Library + Playwright         |
+| Deployment | Vercel                                        |
 
 ---
 

@@ -6,36 +6,24 @@ import { deleteItem } from '@/actions/items'
 import { Button } from '@/components/ui/button'
 import { AddItemForm } from '@/components/items/add-item-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-type Item = {
-  id: string
-  name: string
-  estimated_cost: number | null
-  assigned_guest_id: string | null
-  guests: { id: string; name: string } | { id: string; name: string }[] | null
-}
+import { ItemWithGuest } from '@/types'
+import { resolveGuest } from '@/lib/utils/guest'
 
 type ItemsBoardProps = {
   eventId: string
   eventSlug: string
-  items: Item[]
-}
-
-function getGuestName(guests: Item['guests']): string | null {
-  if (!guests) return null
-  const guest = Array.isArray(guests) ? guests[0] : guests
-  return guest?.name ?? null
+  items: ItemWithGuest[]
 }
 
 type HostItemRowProps = {
-  item: Item
+  item: ItemWithGuest
   eventSlug: string
   t: Awaited<ReturnType<typeof getTranslations>>
   format: Awaited<ReturnType<typeof getFormatter>>
 }
 
 function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
-  const guestName = getGuestName(item.guests)
+  const guestName = resolveGuest(item.guests)?.name ?? null
   const isClaimed = !!item.assigned_guest_id
 
   return (
@@ -62,7 +50,6 @@ function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
 
       <form
         action={async () => {
-          'use server'
           await deleteItem(item.id, eventSlug)
         }}
       >

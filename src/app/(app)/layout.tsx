@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { User } from 'lucide-react'
 import { getTranslations } from 'next-intl/server'
 
 import { logout } from '@/actions/auth'
 import { Button } from '@/components/ui/button'
 import { getProfile } from '@/lib/queries/profile'
 import { createClient } from '@/lib/supabase/server'
+import { getInitials } from '@/lib/utils/presentation'
 import { ThemeToggle } from '@/components/common/theme-toggle'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import {
@@ -16,16 +18,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { User } from 'lucide-react'
-
-function getInitials(name: string): string {
-  return name
-    .split(' ')
-    .map((n) => n[0])
-    .join('')
-    .toUpperCase()
-    .slice(0, 2)
-}
 
 export default async function AppLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const t = await getTranslations('Common')
