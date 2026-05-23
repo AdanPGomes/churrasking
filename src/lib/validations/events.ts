@@ -14,35 +14,17 @@ export const eventBaseSchema = z.object({
   items: z.array(itemSchema).optional(),
 })
 
-export const createEventSchema = z
-  .object({
-    title: z.string().min(3, 'Title must be at least 3 characters').max(100),
-    description: z.string().max(500).optional(),
-    date: z.string().min(1, 'Date is required'),
-    time: z.string().min(1, 'Time is required'),
-    location: z.string().max(200).optional(),
-    items: z.array(itemSchema).optional(),
-  })
-  .refine(
-    (data) => {
-      const combined = new Date(`${data.date}T${data.time}`)
-      return combined > new Date()
-    },
-    {
-      message: 'Event must be scheduled in the future',
-      path: ['date'],
-    }
-  )
+export const createEventSchema = z.object(eventBaseSchema.shape).refine(
+  (data) => {
+    const combined = new Date(`${data.date}T${data.time}`)
+    return combined > new Date()
+  },
+  {
+    message: 'Event must be scheduled in the future',
+    path: ['date'],
+  }
+)
 
-export const updateEventSchema = z.object({
-  title: z.string().min(3, 'Title must be at least 3 characters').max(100),
-  description: z.string().max(500).optional(),
-  date: z.string().min(1, 'Date is required'),
-  time: z.string().min(1, 'Time is required'),
-  location: z.string().max(200).optional(),
-  items: z.array(itemSchema).optional(),
-})
+export const updateEventSchema = z.object(eventBaseSchema.shape)
 
-export type CreateEventInput = z.infer<typeof createEventSchema>
-export type UpdateEventInput = z.infer<typeof updateEventSchema>
 export type EventItem = z.infer<typeof itemSchema>

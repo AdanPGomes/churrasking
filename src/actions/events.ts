@@ -65,7 +65,7 @@ export async function createEvent(formData: FormData): Promise<ActionResult> {
     p_items:
       items && items.length > 0
         ? items.map((item) => ({ name: item.name, estimated_cost: item.estimated_cost ?? null }))
-        : '[]',
+        : [],
   })
 
   if (error || !data?.[0]) return { error: 'Failed to create event' }
