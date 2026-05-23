@@ -2,12 +2,12 @@ import { Trash2 } from 'lucide-react'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
+import { ItemWithGuest } from '@/types'
 import { deleteItem } from '@/actions/items'
 import { Button } from '@/components/ui/button'
+import { resolveGuest } from '@/lib/utils/guest'
 import { AddItemForm } from '@/components/items/add-item-form'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ItemWithGuest } from '@/types'
-import { resolveGuest } from '@/lib/utils/guest'
 
 type ItemsBoardProps = {
   eventId: string
@@ -48,11 +48,7 @@ function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
         </span>
       )}
 
-      <form
-        action={async () => {
-          await deleteItem(item.id, eventSlug)
-        }}
-      >
+      <form action={deleteItem.bind(null, item.id, eventSlug) as unknown as () => void}>
         <Button
           type="submit"
           variant="ghost"

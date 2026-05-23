@@ -5,6 +5,15 @@ const itemSchema = z.object({
   estimated_cost: z.coerce.number().min(0).optional(),
 })
 
+export const eventBaseSchema = z.object({
+  title: z.string().min(3, 'Title must be at least 3 characters').max(100),
+  description: z.string().max(500).optional(),
+  date: z.string().min(1, 'Date is required'),
+  time: z.string().min(1, 'Time is required'),
+  location: z.string().max(200).optional(),
+  items: z.array(itemSchema).optional(),
+})
+
 export const createEventSchema = z
   .object({
     title: z.string().min(3, 'Title must be at least 3 characters').max(100),

@@ -3,54 +3,45 @@
 import { z } from 'zod'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFieldArray, useForm } from 'react-hook-form'
 
-import { createEvent } from '@/actions/events'
 import { Button } from '@/components/ui/button'
-import { ItemFieldRow } from './item-field-row'
 import { Separator } from '@/components/ui/separator'
-import { createEventSchema } from '@/lib/validations/events'
+import { ItemFieldRow } from '@/components/events/item-field-row'
 import { FormErrorAlert } from '@/components/common/form-error-alert'
 import { FileUploadField } from '@/components/common/file-upload-field'
 import { ControlledFieldInput } from '@/components/common/controlled-field-input'
 import { ControlledFieldTextArea } from '@/components/common/controlled-field-text-area'
 import { FieldDescription, FieldGroup, FieldLegend, FieldSet } from '@/components/ui/field'
+import { createEventSchema, eventBaseSchema, updateEventSchema } from '@/lib/validations/events'
 
-function getDefaultDate(): string {
-  return new Date().toISOString().split('T')[0]
+type EventFormMode = 'create' | 'edit'
+
+type EventFormProps = {
+  mode: EventFormMode
+  defaultValues: z.input<typeof eventBaseSchema>
+  onSubmit: (formData: FormData) => Promise<{ error?: string }>
+  submitLabel: string
+  submittingLabel: string
+  showItems?: boolean
 }
 
-function getDefaultTime(): string {
-  const date = new Date()
-  date.setHours(date.getHours() + 1, 0, 0, 0)
-  return date.toTimeString().slice(0, 5)
-}
-
-export function CreateEventForm() {
-  const t = useTranslations('Events')
+export function EventForm(props: EventFormProps) {
+  const tEvents = useTranslations('Events')
   const tCommon = useTranslations('Common')
   const router = useRouter()
 
   const [coverFile, setCoverFile] = useState<File | null>(null)
   const [serverError, setServerError] = useState<string | null>(null)
 
-  const form = useForm<
-    z.input<typeof createEventSchema>,
-    unknown,
-    z.output<typeof createEventSchema>
-  >({
-    resolver: zodResolver(createEventSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      date: getDefaultDate(),
-      time: getDefaultTime(),
-      location: '',
-      items: [],
-    },
+  const schema = props.mode === 'create' ? createEventSchema : updateEventSchema
+
+  const form = useForm<z.input<typeof eventBaseSchema>, unknown, z.output<typeof eventBaseSchema>>({
+    resolver: zodResolver(schema),
+    defaultValues: props.defaultValues,
   })
 
   const { fields, append, remove } = useFieldArray({
@@ -58,7 +49,7 @@ export function CreateEventForm() {
     name: 'items',
   })
 
-  async function onSubmit(data: z.output<typeof createEventSchema>) {
+  async function onSubmit(data: z.output<typeof eventBaseSchema>) {
     setServerError(null)
 
     const formData = new FormData()
@@ -68,12 +59,9 @@ export function CreateEventForm() {
     formData.append('time', data.time)
     formData.append('location', data.location ?? '')
     formData.append('items', JSON.stringify(data.items ?? []))
+    if (coverFile) formData.append('cover', coverFile)
 
-    if (coverFile) {
-      formData.append('cover', coverFile)
-    }
-
-    const result = await createEvent(formData)
+    const result = await props.onSubmit(formData)
     if (result?.error) setServerError(result.error)
   }
 
@@ -84,23 +72,23 @@ export function CreateEventForm() {
           <ControlledFieldInput
             control={form.control}
             name="title"
-            label={t('fields.title')}
-            placeholder={t('fields.titlePlaceholder')}
+            label={tEvents('fields.title')}
+            placeholder={tEvents('fields.titlePlaceholder')}
             required
           />
 
           <ControlledFieldTextArea
             control={form.control}
             name="description"
-            label={t('fields.description')}
-            placeholder={t('fields.descriptionPlaceholder')}
+            label={tEvents('fields.description')}
+            placeholder={tEvents('fields.descriptionPlaceholder')}
           />
 
-          <FieldGroup className="grid grid-cols-2">
+          <FieldGroup className="grid grid-cols-2 gap-4">
             <ControlledFieldInput
               control={form.control}
               name="date"
-              label={t('fields.date')}
+              label={tEvents('fields.date')}
               type="date"
               inputProps={{ min: new Date().toISOString().split('T')[0] }}
               required
@@ -109,7 +97,7 @@ export function CreateEventForm() {
             <ControlledFieldInput
               control={form.control}
               name="time"
-              label={t('fields.time')}
+              label={tEvents('fields.time')}
               type="time"
               required
             />
@@ -118,38 +106,42 @@ export function CreateEventForm() {
           <ControlledFieldInput
             control={form.control}
             name="location"
-            label={t('fields.location')}
-            placeholder={t('fields.locationPlaceholder')}
+            label={tEvents('fields.location')}
+            placeholder={tEvents('fields.locationPlaceholder')}
           />
         </FieldSet>
 
         <div className="flex flex-col gap-4">
-          <FileUploadField id="cover" label={t('fields.cover')} onChange={setCoverFile} />
+          <FileUploadField id="cover" label={tEvents('fields.cover')} onChange={setCoverFile} />
 
-          <Separator />
+          {props.showItems && (
+            <>
+              <Separator />
 
-          <FieldSet className="flex flex-col">
-            <FieldLegend>{t('items.sectionTitle')}</FieldLegend>
-            <FieldDescription>{t('items.sectionDescription')}</FieldDescription>
+              <FieldSet className="flex flex-col">
+                <FieldLegend>{tEvents('items.sectionTitle')}</FieldLegend>
+                <FieldDescription>{tEvents('items.sectionDescription')}</FieldDescription>
 
-            {fields.map((field, index) => (
-              <ItemFieldRow
-                key={field.id}
-                index={index}
-                control={form.control}
-                onRemove={() => remove(index)}
-              />
-            ))}
+                {fields.map((field, index) => (
+                  <ItemFieldRow
+                    key={field.id}
+                    index={index}
+                    control={form.control}
+                    onRemove={() => remove(index)}
+                  />
+                ))}
 
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => append({ name: '', estimated_cost: undefined })}
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              {t('items.addItem')}
-            </Button>
-          </FieldSet>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => append({ name: '', estimated_cost: undefined })}
+                >
+                  <Plus className="h-4 w-4 mr-2" />
+                  {tEvents('items.addItem')}
+                </Button>
+              </FieldSet>
+            </>
+          )}
 
           <FormErrorAlert message={serverError} />
 
@@ -160,17 +152,11 @@ export function CreateEventForm() {
               type="submit"
               disabled={form.formState.isSubmitting}
               aria-busy={form.formState.isSubmitting}
-              className="w-full"
             >
-              {form.formState.isSubmitting ? t('actions.creating') : t('actions.create')}
+              {form.formState.isSubmitting ? props.submittingLabel : props.submitLabel}
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => router.back()}
-              className="w-full"
-            >
+            <Button type="button" variant="outline" onClick={() => router.back()}>
               {tCommon('cancel')}
             </Button>
           </div>
