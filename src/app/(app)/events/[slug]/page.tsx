@@ -173,6 +173,7 @@ export default async function EventDetailPage({ params }: Props) {
           <EventHeroActions eventId={event.id} slug={event.slug} />
         </div>
       }
+      coverUrl={event.cover_url}
     >
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card>
