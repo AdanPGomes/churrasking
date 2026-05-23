@@ -122,6 +122,7 @@ export default async function PublicEventPage({ params }: Props) {
           </div>
         </div>
       }
+      coverUrl={event.cover_url}
     >
       <div className="grid grid-cols-3 gap-0 border border-border rounded-2xl overflow-hidden bg-card -mt-4">
         <div className="flex flex-col items-center py-4 border-r border-border">
