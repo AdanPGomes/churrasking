@@ -44,7 +44,7 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
         <div className="grid grid-cols-2 gap-3">
           <Button
             onClick={() => handleRsvp('confirmed')}
-            disabled={isLoading}
+            disabled={isLoading || currentStatus === 'confirmed'}
             aria-pressed={currentStatus === 'confirmed'}
             className={
               currentStatus === 'confirmed'
@@ -58,7 +58,7 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
 
           <Button
             onClick={() => handleRsvp('declined')}
-            disabled={isLoading}
+            disabled={isLoading || currentStatus === 'declined'}
             aria-pressed={currentStatus === 'declined'}
             variant="outline"
             className={currentStatus === 'declined' ? 'border-destructive text-destructive' : ''}
