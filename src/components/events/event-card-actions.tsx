@@ -1,5 +1,6 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
@@ -32,6 +33,7 @@ type EventCardActionsProps = {
 
 export function EventCardActions({ eventId, slug }: EventCardActionsProps) {
   const t = useTranslations('Events')
+  const tToast = useTranslations('Toast')
   const router = useRouter()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -42,11 +44,13 @@ export function EventCardActions({ eventId, slug }: EventCardActionsProps) {
     setError(null)
     const result = await deleteEvent(eventId)
     if (result?.error) {
+      toast.error(tToast('event.deleteError'))
       setError(result.error)
       setIsDeleting(false)
-      return
+      setShowDeleteDialog(false)
+    } else {
+      router.push('/dashboard?status=success&action=deleted')
     }
-    setShowDeleteDialog(false)
   }
 
   return (

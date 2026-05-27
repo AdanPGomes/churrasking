@@ -14,6 +14,7 @@ import { PageContainer } from '@/components/layout/page-container'
 import { SectionHeader } from '@/components/layout/section-header'
 import { getHostEvents, getHostStats } from '@/lib/queries/events'
 import { DashboardSkeleton } from '@/components/dashboard/dashboard-skeleton'
+import { ToastHandler } from '@/components/common/toast-handler'
 
 async function DashboardContent() {
   const supabase = await createClient()
@@ -118,6 +119,7 @@ export default async function DashboardPage() {
       <Suspense fallback={<DashboardSkeleton />}>
         <DashboardContent />
       </Suspense>
+      <ToastHandler />
     </PageContainer>
   )
 }

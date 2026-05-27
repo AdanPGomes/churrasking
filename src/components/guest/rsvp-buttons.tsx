@@ -1,5 +1,6 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Check, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -16,6 +17,7 @@ type RsvpButtonsProps = {
 
 export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
   const t = useTranslations('Public')
+  const tToast = useTranslations('Toast')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -26,13 +28,17 @@ export function RsvpButtons({ guestId, currentStatus }: RsvpButtonsProps) {
 
     const result = await updateRsvp(guestId, status)
     if (result?.error) {
+      toast.error(tToast('rsvp.updateError'))
       setError(result.error)
       setIsLoading(false)
       return
+    } else {
+      toast.success(
+        tToast(`rsvp.${status === 'confirmed' ? 'confirmedSuccess' : 'declinedSuccess'}`)
+      )
+      setIsLoading(false)
+      router.refresh()
     }
-
-    router.refresh()
-    setIsLoading(false)
   }
 
   return (

@@ -46,7 +46,7 @@ export function EventHeroActions({ eventId, slug }: EventHeroActionsProps) {
       setIsDeleting(false)
       return
     }
-    router.push('/dashboard')
+    router.push('/dashboard?status=success&action=deleted')
   }
 
   return (

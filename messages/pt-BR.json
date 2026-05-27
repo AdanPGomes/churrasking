@@ -172,6 +172,32 @@
     "themeDark": "Escuro",
     "themeSystem": "Sistema"
   },
+  "Toast": {
+    "event": {
+      "createSuccess": "Churrasco criado com sucesso!",
+      "createError": "Não foi possível criar o evento. Tente novamente.",
+      "updateSuccess": "Evento atualizado com sucesso!",
+      "updateError": "Não foi possível salvar as alterações. Tente novamente.",
+      "deleteSuccess": "Evento excluído.",
+      "deleteError": "Não foi possível excluir o evento. Tente novamente."
+    },
+    "item": {
+      "addError": "Não foi possível adicionar o item. Tente novamente.",
+      "addSuccess": "Item adicionado com sucesso!",
+      "deleteError": "Não foi possível remover o item. Tente novamente.",
+      "deleteSuccess": "Item excluído.",
+      "claimError": "Não foi possível reservar o item. Tente novamente.",
+      "claimSuccess": "Item foi reservado com sucesso.",
+      "unclaimError": "Não foi possível liberar o item. Tente novamente.",
+      "unclaimSuccess": "Item foi liberado com sucesso!",
+      "alreadyClaimed": "Este item acabou de ser reservado por outra pessoa."
+    },
+    "rsvp": {
+      "confirmedSuccess": "Presença confirmada!",
+      "declinedSuccess": "Presença recusada.",
+      "updateError": "Não foi possível atualizar sua presença. Tente novamente."
+    }
+  },
   "Common": {
     "darkMode": "Tema escuro",
     "lightMode": "Tema claro",

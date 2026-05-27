@@ -1,13 +1,14 @@
 'use client'
 
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Check } from 'lucide-react'
 import { useFormatter, useTranslations } from 'next-intl'
 
+import { ItemWithGuest } from '@/types'
 import { Button } from '@/components/ui/button'
 import { claimItem, unclaimItem } from '@/actions/items'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { ItemWithGuest } from '@/types'
 
 type GuestItemsBoardProps = {
   items: ItemWithGuest[]
@@ -30,6 +31,7 @@ type GuestItemRowProps = {
 }
 
 function GuestItemRow({ item, eventSlug, currentGuestId, t, format }: GuestItemRowProps) {
+  const tToast = useTranslations('Toast')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -41,7 +43,12 @@ function GuestItemRow({ item, eventSlug, currentGuestId, t, format }: GuestItemR
     setIsLoading(true)
     setError(null)
     const result = await claimItem(item.id, eventSlug)
-    if (result?.error) setError(result.error)
+    if (result?.error) {
+      toast.error(tToast('item.claimError'))
+      setError(result.error)
+    } else {
+      toast.success(tToast('item.claimSuccess'))
+    }
     setIsLoading(false)
   }
 
@@ -49,7 +56,12 @@ function GuestItemRow({ item, eventSlug, currentGuestId, t, format }: GuestItemR
     setIsLoading(true)
     setError(null)
     const result = await unclaimItem(item.id, eventSlug)
-    if (result?.error) setError(result.error)
+    if (result?.error) {
+      toast.error(tToast('item.unclaimError'))
+      setError(result.error)
+    } else {
+      toast.success(tToast('item.unclaimSuccess'))
+    }
     setIsLoading(false)
   }
 
