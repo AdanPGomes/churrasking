@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Figtree } from 'next/font/google'
 import { getLocale, getMessages, getTranslations } from 'next-intl/server'
 
 import { cn } from '@/lib/utils'
+import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/common/theme-provider'
 
 import './globals.css'
@@ -67,6 +68,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <NextIntlClientProvider messages={messages}>{children}</NextIntlClientProvider>
         </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   )

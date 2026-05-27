@@ -1,6 +1,7 @@
 'use client'
 
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
@@ -32,6 +33,7 @@ type EventFormProps = {
 export function EventForm(props: EventFormProps) {
   const tEvents = useTranslations('Events')
   const tCommon = useTranslations('Common')
+  const tToast = useTranslations('Toast')
   const router = useRouter()
 
   const [coverFile, setCoverFile] = useState<File | null>(null)
@@ -62,7 +64,12 @@ export function EventForm(props: EventFormProps) {
     if (coverFile) formData.append('cover', coverFile)
 
     const result = await props.onSubmit(formData)
-    if (result?.error) setServerError(result.error)
+    if (result?.error) {
+      toast.error(tToast(`event.${props.mode === 'create' ? 'createError' : 'updateError'}`))
+      setServerError(result.error)
+    } else {
+      toast.success(tToast(`event.${props.mode === 'create' ? 'createSuccess' : 'updateSuccess'}`))
+    }
   }
 
   return (

@@ -168,6 +168,32 @@
     "themeDark": "Dark",
     "themeSystem": "System"
   },
+  "Toast": {
+    "event": {
+      "createSuccess": "Event created successfully!",
+      "createError": "Could not create the event. Please try again.",
+      "updateSuccess": "Event updated successfully!",
+      "updateError": "Could not save changes. Please try again.",
+      "deleteSuccess": "Event deleted.",
+      "deleteError": "Could not delete the event. Please try again."
+    },
+    "item": {
+      "addError": "Could not add the item. Please try again.",
+      "addSuccess": "Item added successfully!",
+      "deleteError": "Could not remove the item. Please try again.",
+      "deleteSuccess": "Item deleted.",
+      "claimError": "Could not claim the item. Please try again.",
+      "claimSuccess": "Item was claimed successfully!",
+      "unclaimError": "Could not unclaim the item. Please try again.",
+      "unclaimSuccess": "Item was successfully unclaimed!",
+      "alreadyClaimed": "This item was just claimed by someone else."
+    },
+    "rsvp": {
+      "confirmedSuccess": "Attendance confirmed!",
+      "declinedSuccess": "Attendance declined.",
+      "updateError": "Could not update your RSVP. Please try again."
+    }
+  },
   "Common": {
     "darkMode": "Dark mode",
     "lightMode": "Light mode",

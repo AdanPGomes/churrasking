@@ -1,12 +1,9 @@
-import { Trash2 } from 'lucide-react'
 import { getFormatter, getTranslations } from 'next-intl/server'
 
-import { cn } from '@/lib/utils'
 import { ItemWithGuest } from '@/types'
-import { deleteItem } from '@/actions/items'
-import { Button } from '@/components/ui/button'
 import { resolveGuest } from '@/lib/utils/guest'
 import { AddItemForm } from '@/components/items/add-item-form'
+import { DeleteItemButton } from '@/components/items/delete-item-button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 type ItemsBoardProps = {
@@ -22,7 +19,7 @@ type HostItemRowProps = {
   format: Awaited<ReturnType<typeof getFormatter>>
 }
 
-function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
+async function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
   const guestName = resolveGuest(item.guests)?.name ?? null
   const isClaimed = !!item.assigned_guest_id
 
@@ -48,18 +45,12 @@ function HostItemRow({ item, eventSlug, t, format }: HostItemRowProps) {
         </span>
       )}
 
-      <form action={deleteItem.bind(null, item.id, eventSlug) as unknown as () => void}>
-        <Button
-          type="submit"
-          variant="ghost"
-          size="icon"
-          disabled={isClaimed}
-          aria-label={t('items.removeItem')}
-          className={cn('h-7 w-7 shrink-0', isClaimed && 'opacity-30 cursor-not-allowed')}
-        >
-          <Trash2 className="h-3.5 w-3.5 text-muted-foreground" />
-        </Button>
-      </form>
+      <DeleteItemButton
+        itemId={item.id}
+        eventSlug={eventSlug}
+        disabled={isClaimed}
+        ariaLabel={t('items.removeItem')}
+      />
     </div>
   )
 }

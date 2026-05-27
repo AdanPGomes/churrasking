@@ -1,6 +1,7 @@
 'use client'
 
 import { z } from 'zod'
+import { toast } from 'sonner'
 import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -21,6 +22,7 @@ type AddItemForm = {
 
 export function AddItemForm({ eventId, eventSlug }: AddItemForm) {
   const t = useTranslations('Events')
+  const tToast = useTranslations('Toast')
   const [serverError, setServerError] = useState<string | null>(null)
 
   const form = useForm<z.input<typeof addItemSchema>, unknown, z.output<typeof addItemSchema>>({
@@ -32,8 +34,10 @@ export function AddItemForm({ eventId, eventSlug }: AddItemForm) {
     setServerError(null)
     const result = await addItem(eventId, eventSlug, data)
     if (result?.error) {
+      toast.error(tToast('item.addError'))
       setServerError(result.error)
-      return
+    } else {
+      toast.success(tToast('item.addSuccess'))
     }
     form.reset()
   }
